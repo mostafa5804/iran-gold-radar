@@ -1,6 +1,6 @@
-import {preferredModel} from './models.js?v=0.3.1';
-import {HORIZONS,validateForecast,pathPoint,forecastUsable,sourceURL,validateSources,sourceReceipts} from './forecast.js?v=0.3.1';
-import {DAY,intrinsic,premium,sma,rsi,atr,volatility,cone,backtest,scenario,quoteFresh,portfolio} from './engine.js?v=0.3.1';
+import {preferredModel} from './models.js?v=0.3.2';
+import {HORIZONS,validateForecast,pathPoint,forecastUsable,sourceURL,validateSources,sourceReceipts} from './forecast.js?v=0.3.2';
+import {DAY,intrinsic,premium,sma,rsi,atr,volatility,cone,backtest,scenario,quoteFresh,portfolio} from './engine.js?v=0.3.2';
 const uid=()=>Array.from(crypto.getRandomValues(new Uint32Array(4)),n=>n.toString(16).padStart(8,'0')).join('');
 const $=id=>document.getElementById(id);
 const fmt=(n,d=0)=>Number.isFinite(n)?new Intl.NumberFormat('fa-IR',{maximumFractionDigits:d}).format(n):'—';
@@ -17,7 +17,9 @@ const scenarioNames={base:'پایه',easing:'کاهش تنش',stress:'تشدید
 try{manualSources=validateSources(read('igr.sources.v1',[]));}catch{}
 let personal=read('igr.personal.v1',{budget:0,steps:5,ask:0,bid:0,trades:[]});
 let journal=read('igr.journal.v1',[]);
-try{key=sessionStorage.getItem('igr.key')||'';}catch{}
+let keyStorageMode='session';
+try{key=localStorage.getItem('igr.key')||'';if(key)keyStorageMode='local';}catch{}
+if(!key)try{key=sessionStorage.getItem('igr.key')||'';}catch{}
 activeModel=read('igr.model.v1','');
 const latestLocal=read('igr.latest.v2',null);if(latestLocal&&typeof latestLocal.text==='string'&&typeof latestLocal.createdAt==='string')currentReport=latestLocal;
 let toastTimer;
@@ -143,8 +145,8 @@ function filterModels(){
   if(modelsCatalog.some(m=>m.name===activeModel))$('model').value=activeModel;
   $('modelInfo').textContent=modelsCatalog.length?`${fmt(modelsCatalog.length)} مدل از API کلید خودت. قابلیت جست‌وجوی وب و سهمیه هنگام اجرا بررسی می‌شود.`:'فهرست مدل‌های قابل دسترس پس از بررسی کلید تو نمایش داده می‌شود.';
 }
-function openSettings(){$('apiKey').value=key;$('rememberKey').checked=!!readSessionKey();$('settings').showModal();}
-function readSessionKey(){try{return sessionStorage.getItem('igr.key');}catch{return null;}}
+function openSettings(){$('apiKey').value=key;$('keySession').checked=keyStorageMode==='session';$('keyLocal').checked=keyStorageMode==='local';$('settings').showModal();}
+function clearStoredKeys(){let ok=true;for(const name of ['sessionStorage','localStorage'])try{window[name].removeItem('igr.key');}catch{ok=false;}return ok;}
 async function loadModels(){
   const candidate=$('apiKey').value.trim();if(!candidate){$('settingsStatus').textContent='ابتدا کلید خودت را وارد کن.';return false;}if($('loadModels').disabled)return false;
   $('loadModels').disabled=true;$('settingsStatus').textContent='در حال دریافت فهرست واقعی مدل‌ها…';
@@ -225,12 +227,14 @@ $('settingsForm').onsubmit=async e=>{
   try{if(verifiedKey!==candidate&&!(await loadModels()))return;
     const selected=$('model').value;if(!modelsCatalog.some(m=>m.name===selected)){$('settingsStatus').textContent='یک مدل در دسترس را انتخاب کن.';return;}
     key=candidate;activeModel=selected;save('igr.model.v1',activeModel);
-    try{if($('rememberKey').checked)sessionStorage.setItem('igr.key',key);else sessionStorage.removeItem('igr.key');}catch{toast('نگهداری کلید در نشست ممکن نیست.');}
+    keyStorageMode=$('keyLocal').checked?'local':'session';
+    if(!clearStoredKeys()){$('settingsStatus').textContent='پاک‌کردن ذخیره قبلی ممکن نشد؛ مجوز ذخیره‌سازی مرورگر را بررسی کن.';return;}
+    try{(keyStorageMode==='local'?localStorage:sessionStorage).setItem('igr.key',key);}catch{$('settingsStatus').textContent='ذخیره کلید ممکن نشد؛ مجوز ذخیره‌سازی مرورگر را بررسی کن.';return;}
     $('settings').close();$('settingsTop').textContent=activeModel.replace('models/','');toast('کلید شخصی متصل شد؛ حالا تحلیل تازه را اجرا کن.');
   }finally{$('connectKey').disabled=false;}
 };
 $('modelSearch').oninput=filterModels;$('model').onchange=()=>{activeModel=$('model').value;};
-$('forgetKey').onclick=()=>{analysisController?.abort();key='';verifiedKey='';activeModel='';$('apiKey').value='';$('rememberKey').checked=false;setModels([]);try{sessionStorage.removeItem('igr.key');localStorage.removeItem('igr.model.v1');}catch{}$('settingsStatus').textContent='کلید از حافظه و نشست این تب پاک شد.';};
+$('forgetKey').onclick=()=>{analysisController?.abort();key='';verifiedKey='';activeModel='';$('apiKey').value='';keyStorageMode='session';$('keySession').checked=true;setModels([]);const cleared=clearStoredKeys();try{localStorage.removeItem('igr.model.v1');}catch{}$('settingsStatus').textContent=cleared?'کلید از حافظه، نشست و ذخیره مرورگر پاک شد.':'کلید از حافظه پاک شد؛ پاک‌کردن ذخیره مرورگر ممکن نشد. از تنظیمات مرورگر داده‌های سایت را پاک کن.';};
 $('refresh').onclick=refresh;$('analyze').onclick=analyze;
 $('horizons').onclick=e=>{const b=e.target.closest('button[data-days]');if(!b)return;horizon=+b.dataset.days;for(const btn of $('horizons').children){btn.classList.toggle('selected',btn===b);btn.setAttribute('aria-pressed',String(btn===b));}drawChart();};
 for(const id of ['scenarioDollar','scenarioOunce','scenarioPremium'])$(id).oninput=renderScenario;
