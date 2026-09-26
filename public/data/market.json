@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-26T17:56:38.285487+00:00",
+  "updatedAt": "2026-09-26T18:06:50.790300+00:00",
   "quotes": {
     "gold": {
       "value": 23829800.0,
@@ -10,7 +10,7 @@
       "url": "https://www.tgju.org/profile/geram18",
       "sourceTimeLabel": "19:59:55",
       "pageTime": "2026-09-26 17:16:31",
-      "fetchedAt": "2026-09-26T17:56:38.393796+00:00",
+      "fetchedAt": "2026-09-26T18:06:51.179027+00:00",
       "status": "ok"
     },
     "dollar": {
@@ -21,7 +21,7 @@
       "url": "https://www.tgju.org/profile/price_dollar_rl",
       "sourceTimeLabel": "19:59:57",
       "pageTime": "2026-09-26 17:16:30",
-      "fetchedAt": "2026-09-26T17:56:38.399810+00:00",
+      "fetchedAt": "2026-09-26T18:06:51.233181+00:00",
       "status": "ok"
     },
     "ounce": {
@@ -32,7 +32,7 @@
       "url": "https://www.tgju.org/profile/ons",
       "sourceTimeLabel": "00:51:31",
       "pageTime": "2026-09-26 17:16:42",
-      "fetchedAt": "2026-09-26T17:56:38.454583+00:00",
+      "fetchedAt": "2026-09-26T18:06:51.280632+00:00",
       "status": "ok"
     }
   },
