@@ -1,6 +1,6 @@
-import {preferredModel} from './models.js?v=0.3.0';
-import {HORIZONS,validateForecast,pathPoint,forecastUsable,sourceURL,validateSources,sourceReceipts} from './forecast.js?v=0.3.0';
-import {DAY,intrinsic,premium,sma,rsi,atr,volatility,cone,backtest,scenario,quoteFresh,portfolio} from './engine.js?v=0.3.0';
+import {preferredModel} from './models.js?v=0.3.1';
+import {HORIZONS,validateForecast,pathPoint,forecastUsable,sourceURL,validateSources,sourceReceipts} from './forecast.js?v=0.3.1';
+import {DAY,intrinsic,premium,sma,rsi,atr,volatility,cone,backtest,scenario,quoteFresh,portfolio} from './engine.js?v=0.3.1';
 const uid=()=>Array.from(crypto.getRandomValues(new Uint32Array(4)),n=>n.toString(16).padStart(8,'0')).join('');
 const $=id=>document.getElementById(id);
 const fmt=(n,d=0)=>Number.isFinite(n)?new Intl.NumberFormat('fa-IR',{maximumFractionDigits:d}).format(n):'—';
