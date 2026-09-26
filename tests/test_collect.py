@@ -18,3 +18,26 @@ class ParserTest(unittest.TestCase):
     def test_invalid_markup_fails_closed(self):
         with self.assertRaises(ValueError):parse_quote('blocked','geram18',10)
 if __name__=='__main__': unittest.main()
+
+class FinalHistoryTest(unittest.TestCase):
+    def test_only_closed_tehran_day_gets_final_marker(self):
+        from collect import merge_history
+        import datetime as dt
+        rows=[{'date':d,'open':100,'low':90,'high':120,'close':110} for d in ['2026-09-26','2026-09-27']]
+        now=dt.datetime.fromisoformat('2026-09-26T21:00:00+00:00')
+        merged=merge_history([],rows,10,now,source_page_time='2026-09-27 00:25:00')
+        self.assertIn('finalObservedAt',merged[0])
+        self.assertNotIn('finalObservedAt',merged[1])
+        self.assertEqual(merged[0]['unit'],'IRT')
+        self.assertEqual(merge_history(merged,rows,10,now+dt.timedelta(hours=1),source_page_time='2026-09-27 01:25:00')[0]['finalObservedAt'],merged[0]['finalObservedAt'])
+        rows[0]['close']=111
+        revised=merge_history(merged,rows,10,now+dt.timedelta(hours=1),source_page_time='2026-09-27 01:25:00')
+        self.assertNotEqual(revised[0]['finalObservedAt'],merged[0]['finalObservedAt'])
+
+    def test_cached_source_from_target_day_is_not_a_final_close(self):
+        from collect import merge_history
+        import datetime as dt
+        rows=[{'date':'2026-09-26','open':100,'low':90,'high':120,'close':110}]
+        now=dt.datetime.fromisoformat('2026-09-27T10:00:00+00:00')
+        for stamp in (None,'2026-09-26 17:00:00','invalid'):
+            self.assertNotIn('finalObservedAt',merge_history([],rows,10,now,source_page_time=stamp)[0])

@@ -7,6 +7,7 @@ import os
 import re
 import urllib.request
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'public/data/market.json'
@@ -59,6 +60,30 @@ def parse_history(s, divisor):
         raise ValueError('Empty history')
     return sorted(result, key=lambda r: r['date'])
 
+
+def merge_history(existing, incoming, divisor, now=None, source_page_time=None):
+    now = now or dt.datetime.now(dt.timezone.utc)
+    today = now.astimezone(ZoneInfo('Asia/Tehran')).date().isoformat()
+    source_day = None
+    try:
+        page = dt.datetime.fromisoformat(source_page_time).replace(tzinfo=ZoneInfo('Asia/Tehran'))
+        if page <= now.astimezone(ZoneInfo('Asia/Tehran')) + dt.timedelta(minutes=5):
+            source_day = page.date().isoformat()
+    except (TypeError, ValueError):
+        pass
+    rows = {r['date']: r for r in existing}
+    for row in incoming:
+        dated = {**row, 'source': 'TGJU', 'unit': 'USD/oz' if divisor == 1 else 'IRT'}
+        if row['date'] < today and source_day and row['date'] < source_day:
+            prior = rows.get(row['date'], {})
+            # Preserve first closed-day observation unless the source revises OHLC.
+            same = all(prior.get(k) == row[k] for k in ('open','low','high','close'))
+            dated['finalObservedAt'] = prior.get('finalObservedAt') if same and prior.get('finalObservedAt') else now.isoformat()
+        if 'finalObservedAt' not in dated and rows.get(row['date'], {}).get('finalObservedAt'):
+            continue
+        rows[row['date']] = dated
+    return [rows[d] for d in sorted(rows) if d <= today][-1500:]
+
 def fetch(url):
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (IranGoldRadar/0.1; public market dashboard)', 'Accept-Language': 'fa,en;q=0.8'})
     with urllib.request.urlopen(req, timeout=45) as response:
@@ -78,10 +103,8 @@ def main():
             try:
                 source = job.result()
                 if history:
-                    rows = {r['date']: r for r in result['history'].get(key, [])}
-                    rows.update({r['date']: r for r in parse_history(source, div)})
-                    today = dt.datetime.now(dt.timezone.utc).date().isoformat()
-                    result['history'][key] = [rows[d] for d in sorted(rows) if d <= today][-1500:]
+                    page_stamp = re.search(r'id="server-time"[^>]*data-value="([^"]+)"', source)
+                    result['history'][key] = merge_history(result['history'].get(key, []), parse_history(source, div), div, source_page_time=page_stamp[1] if page_stamp else None)
                 else:
                     result['quotes'][key] = parse_quote(source, slug, div)
             except Exception as exc:

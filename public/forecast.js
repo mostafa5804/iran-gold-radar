@@ -1,13 +1,15 @@
 // Scenario arithmetic. These are AI assumptions, not calibrated probabilities.
-export const HORIZONS=[7,30,90,365];
+export const HORIZONS=[1,7,30,90,365];
 const finite=(v,min,max)=>typeof v==='number'&&Number.isFinite(v)&&v>=min&&v<=max;
 export function validateForecast(f,sourceCount){
   if(!f||typeof f.summary!=='string'||!Array.isArray(f.drivers))throw Error('ساختار پیش‌بینی ناقص است');
   const refs=a=>Array.isArray(a)&&a.length>0&&a.every(n=>Number.isInteger(n)&&n>=1&&n<=sourceCount);
   for(const k of ['inflationIran','inflationUS']){const v=f[k];if(!v||!(v.annualPct===null||finite(v.annualPct,-20,500))||typeof v.basis!=='string'||(v.annualPct!==null&&!refs(v.sourceRefs)))throw Error('فرض تورم بدون پشتوانه معتبر');}
   for(const name of ['base','easing','stress']){
-    const points=f.scenarios?.[name];if(!Array.isArray(points)||points.length!==4)throw Error('افق‌های پیش‌بینی ناقص است');
-    points.forEach((p,i)=>{if(p.days!==HORIZONS[i]||!finite(p.dollarPct,-90,500)||!finite(p.ouncePct,-90,500)||!finite(p.premiumPp,-50,100)||typeof p.reason!=='string'||!refs(p.sourceRefs))throw Error('فرض عددی یا ارجاع نامعتبر است');});
+    const points=f.scenarios?.[name];if(!Array.isArray(points)||![4,5].includes(points.length))throw Error('افق‌های پیش‌بینی ناقص است');
+    const expected=points.length===5?HORIZONS:HORIZONS.slice(1);
+    if(points.length!==f.scenarios.base.length)throw Error('افق سناریوها یکسان نیست');
+    points.forEach((p,i)=>{if(p.days!==expected[i]||!finite(p.dollarPct,-90,500)||!finite(p.ouncePct,-90,500)||!finite(p.premiumPp,-50,100)||typeof p.reason!=='string'||!refs(p.sourceRefs))throw Error('فرض عددی یا ارجاع نامعتبر است');});
   }
   if(f.drivers.length>12||f.drivers.some(d=>typeof d.title!=='string'||typeof d.summary!=='string'||!refs(d.sourceRefs)))throw Error('عامل بدون منبع');
   return f;

@@ -1,6 +1,8 @@
-import {preferredModel} from './models.js?v=0.3.2';
-import {HORIZONS,validateForecast,pathPoint,forecastUsable,sourceURL,validateSources,sourceReceipts} from './forecast.js?v=0.3.2';
-import {DAY,intrinsic,premium,sma,rsi,atr,volatility,cone,backtest,scenario,quoteFresh,portfolio} from './engine.js?v=0.3.2';
+import {createHistoryView} from './history-ui.js?v=0.4.0';
+import {validateLedger,targetDate} from './history.js?v=0.4.0';
+import {preferredModel} from './models.js?v=0.4.0';
+import {HORIZONS,validateForecast,pathPoint,forecastUsable,sourceURL,validateSources,sourceReceipts} from './forecast.js?v=0.4.0';
+import {DAY,intrinsic,premium,sma,rsi,atr,volatility,cone,backtest,scenario,quoteFresh,portfolio} from './engine.js?v=0.4.0';
 const uid=()=>Array.from(crypto.getRandomValues(new Uint32Array(4)),n=>n.toString(16).padStart(8,'0')).join('');
 const $=id=>document.getElementById(id);
 const fmt=(n,d=0)=>Number.isFinite(n)?new Intl.NumberFormat('fa-IR',{maximumFractionDigits:d}).format(n):'—';
@@ -12,6 +14,7 @@ const safeURL=s=>{try{const u=new URL(s);return u.protocol==='https:'?u.href:nul
 function read(key,fallback,storage=localStorage){try{return JSON.parse(storage.getItem(key))??fallback;}catch{return fallback;}}
 function save(key,value,storage=localStorage){try{storage.setItem(key,JSON.stringify(value));return true;}catch{toast('ذخیره در مرورگر ممکن نیست؛ پشتیبان بگیر.');return false;}}
 let market=null, horizon=90, key='', activeModel='', analysisBusy=false,verifiedKey='',modelsCatalog=[],analysisController=null;
+let historyView=null;
 let currentReport=null,selectedScenario='base',priceMode='nominal',manualSources=[];
 const scenarioNames={base:'پایه',easing:'کاهش تنش',stress:'تشدید تنش'};
 try{manualSources=validateSources(read('igr.sources.v1',[]));}catch{}
@@ -43,7 +46,7 @@ function render(){
   $('notice').textContent=`آخرین تلاش دریافت: ${timeLabel(market.updatedAt)}. ${fresh()?'قیمت‌ها از منبع بازار دریافت شده‌اند؛ ساعت ثبت سه بازار لزوماً یکسان نیست.':'بخشی از داده‌ها قدیمی یا در دسترس نیست؛ پیشنهاد معاملاتی و محاسبه حباب متوقف است.'}${market.errors?.length?' خطای دریافت در '+fmt(market.errors.length)+' بخش.':''}`;
   const rows=goldRows(), ma=sma(rows,20), rr=rsi(rows), a=atr(rows);
   $('technicals').innerHTML=`<div><span>RSI · ۱۴</span><strong>${fmt(rr,1)}</strong></div><div><span>میانگین ۲۰ دوره</span><strong>${fmt(ma)}</strong></div><div><span>ATR · تومان</span><strong>${fmt(a)}</strong></div>`;
-  drawChart();renderScenario();renderPortfolio();
+  drawChart();renderScenario();renderPortfolio();historyView?.update(market);
 }
 function activeForecast(){
   if(!fresh()||!forecastUsable(currentReport,market?.quotes))return null;
@@ -58,12 +61,14 @@ function drawChart(){
   if(anchor.gold>0&&Number.isFinite(anchorT))history.push({t:anchorT,v:anchor.gold});
   if(!history.length){$('chart').innerHTML='<div class="empty">هنوز تاریخچه قیمت دریافت نشده است.</div>';return;}
   const realMode=priceMode==='real',canReal=f&&f.inflationIran.annualPct!==null;
+  const endOfTarget=f?Date.parse(targetDate(currentReport.createdAt,horizon)+'T23:59:59+03:30'):anchorT+horizon*DAY;
+  const futureTime=days=>anchorT+(endOfTarget-anchorT)*days/horizon;
   const future=f&&(!realMode||canReal)?Array.from({length:61},(_,i)=>{
     const days=horizon*i/60,points=['base','easing','stress'].map(s=>pathPoint(f,s,days,anchor)),selected=pathPoint(f,selectedScenario,days,anchor),v=p=>realMode?p.real:p.nominal;
-    return {t:anchorT+days*DAY,v:v(selected),low:Math.min(...points.map(v)),high:Math.max(...points.map(v))};
+    return {t:futureTime(days),v:v(selected),low:Math.min(...points.map(v)),high:Math.max(...points.map(v))};
   }):[];
   const all=[...history.map(p=>p.v),...future.flatMap(p=>[p.low,p.high])],min=Math.min(...all)*.97,max=Math.max(...all)*1.03;
-  const start=history[0].t,end=anchorT+horizon*DAY,width=Math.max(300,$('chart').clientWidth),left=54,right=width-20;
+  const start=history[0].t,end=endOfTarget,width=Math.max(300,$('chart').clientWidth),left=54,right=width-20;
   // Give history and future equal room even for a one-year horizon; date labels show the piecewise time scale.
   const todayX=left+(right-left)*.46;
   const x=t=>t<=anchorT?left+(t-start)/(anchorT-start||1)*(todayX-left):todayX+(t-anchorT)/(end-anchorT)*(right-todayX);
@@ -84,16 +89,16 @@ function drawChart(){
   $('forecastBadge').textContent=f?'فرض‌های AI · '+timeLabel(currentReport.createdAt):'مسیر آینده هنوز معتبر نیست';
   $('forecastCaption').textContent=f?f.summary:key?'برای ساخت مسیر آینده، تحلیل تازه را با کلید خودت اجرا کن.':'قیمت‌ها عمومی‌اند؛ برای پیش‌بینی، کلید Gemini خودت را وارد کن.';
   $('forecastExplanation').textContent=f?`خط‌چین: سناریوی ${scenarioNames[selectedScenario]}؛ سایه: دامنه سه سناریو، بدون احتمال آماری. دو بخش زمان مقیاس متفاوت دارند. ${realMode?'آینده با قدرت خرید زمان تحلیل؛ تاریخچه اسمی است.':''} ${currentReport.forecastStatus||''}`:currentReport?.forecastStatus||'فرض‌های عددیِ مستند هنوز دریافت نشده‌اند؛ خط مصنوعی جایگزین نمی‌شود.';
-  $('validation').textContent='مسیرهای AI هنوز آزمون خارج از نمونه ندارند؛ درصد دقت یا احتمال رشد گزارش نمی‌شود. '+fmt(rows.length)+' روز تاریخچه موجود است.';
+  $('validation').textContent='عملکرد پیش‌بینی‌های ثبت‌شده در بخش تاریخچه سنجیده می‌شود؛ نتایج گذشته تضمین آینده نیست. '+fmt(rows.length)+' روز تاریخچه موجود است.';
   renderForecastDetails(f);
 }
 function appendRefs(el,refs){for(const n of refs||[]){const url=safeURL(currentReport?.sources?.[n-1]?.uri);if(!url)continue;const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=' ['+n+']';a.style.color='var(--purple)';el.append(a);}}
 function renderForecastDetails(f){
   for(const [id,key] of [['iran','inflationIran'],['us','inflationUS']]){ $(id==='iran'?'iranInflation':'usInflation').textContent=f&&f[key].annualPct!==null?fmt(f[key].annualPct,1)+'٪ · فرض ۱۲ ماه آینده':'داده کافی نداریم';$(id+'Basis').textContent=f?f[key].basis:'نیاز به تحلیل مستند تازه';if(f)appendRefs($(id+'Basis'),f[key].sourceRefs);}
   if(!f){$('pointReason').textContent='تحلیل معتبر لازم است.';$('factorAssumptions').textContent='در انتظار فرض‌های تازه';$('returnsTable').textContent='فرض‌های معتبر برای محاسبه بازده در دسترس نیست.';$('drivers').textContent='با تحلیل تازه، عوامل مؤثر و منابعشان اینجا نمایش داده می‌شوند.';return;}
-  const p=f.scenarios[selectedScenario].find(p=>p.days===horizon);
+  const p=f.scenarios[selectedScenario].find(p=>p.days===horizon)||{...pathPoint(f,selectedScenario,horizon,currentReport.forecastAnchor),reason:'درون‌یابی تحلیل قدیمی؛ برای پیش‌بینی مستقل فردا تحلیل تازه اجرا کن.',sourceRefs:[]};
   $('factorAssumptions').textContent='دلار '+pct(p.dollarPct)+' · اونس '+pct(p.ouncePct)+' · صرف داخلی '+fmt(p.premiumPp,2)+' واحد درصد';$('factorAssumptions').title=p.reason;
-  $('returnsTable').classList.remove('empty');$('returnsTable').innerHTML='<table><thead><tr><th>افق</th><th>اسمی</th><th>پس از تورم</th></tr></thead><tbody>'+HORIZONS.map(days=>{const p=pathPoint(f,selectedScenario,days,currentReport.forecastAnchor),n=100*(p.nominal/currentReport.forecastAnchor.gold-1),r=p.real===null?null:100*(p.real/currentReport.forecastAnchor.gold-1);return `<tr><td>${{7:'هفته',30:'ماه',90:'۳ ماه',365:'سال'}[days]}</td><td class="${n>=0?'up':'down'}">${pct(n)}</td><td class="${r===null?'':r>=0?'up':'down'}">${pct(r)}</td></tr>`;}).join('')+'</tbody></table>';
+  $('returnsTable').classList.remove('empty');$('returnsTable').innerHTML='<table><thead><tr><th>افق</th><th>اسمی</th><th>پس از تورم</th></tr></thead><tbody>'+f.scenarios[selectedScenario].map(({days})=>{const p=pathPoint(f,selectedScenario,days,currentReport.forecastAnchor),n=100*(p.nominal/currentReport.forecastAnchor.gold-1),r=p.real===null?null:100*(p.real/currentReport.forecastAnchor.gold-1);return `<tr><td>${{1:'فردا',7:'هفته',30:'ماه',90:'۳ ماه',365:'سال'}[days]}</td><td class="${n>=0?'up':'down'}">${pct(n)}</td><td class="${r===null?'':r>=0?'up':'down'}">${pct(r)}</td></tr>`;}).join('')+'</tbody></table>';
   $('drivers').classList.remove('empty');$('drivers').innerHTML=f.drivers.map(d=>`<article class="driver"><h3>${esc(d.title)}</h3><p>${esc(d.summary)} ${d.sourceRefs.map(n=>{const s=currentReport.sources[n-1],url=safeURL(s?.uri);return url?`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">[${n}]</a>`:'';}).join('')}</p></article>`).join('');
   $('pointReason').textContent=p.reason;appendRefs($('pointReason'),p.sourceRefs);
 }
@@ -200,13 +205,14 @@ async function analyze(){
     for(const support of g?.groundingSupports||[]){const segment=support.segment?.text,pos=segment?text.indexOf(segment):-1;const refs=(support.groundingChunkIndices||[]).filter(i=>sources[i]?.uri).map(i=>i+1);if(pos>=0&&refs.length){const end=pos+segment.length;inserts.set(end,new Set([...(inserts.get(end)||[]),...refs]));}}
     for(const [pos,refs] of [...inserts].sort((a,b)=>b[0]-a[0]))cited=cited.slice(0,pos)+' '+[...refs].map(i=>`[${i}]`).join('')+cited.slice(pos);
     const report={createdAt:reportCreatedAt,model:requestModel,grounded,sources,text:grounded?cited:'جست‌وجوی مستند تأیید نشد؛ پیشنهاد معاملاتی نمایش داده نمی‌شود. مدل دیگری انتخاب کن.',searchEntryPoint:g?.searchEntryPoint?.renderedContent};
-    report.manualSources=sourceReceipts(sentSources,c);report.forecastAnchor=Object.fromEntries(['gold','dollar','ounce'].map(k=>[k,inputMarket.quotes[k].value]));
+    report.anchorFetchedAt=inputMarket.quotes.gold.fetchedAt;report.manualSources=sourceReceipts(sentSources,c);report.forecastAnchor=Object.fromEntries(['gold','dollar','ounce'].map(k=>[k,inputMarket.quotes[k].value]));
     report.forecastStatus='فرض‌های عددی کافی دریافت نشد؛ مسیر آینده ساخته نشده است.';
     if(grounded){
       $('aiStatus').textContent='پژوهش دریافت شد؛ در حال استخراج فرض‌ها و محاسبه مسیر آینده…';
-      try{const extracted=await fetchJSON(`https://generativelanguage.googleapis.com/v1beta/${requestModel}:generateContent`,{method:'POST',signal:analysisController.signal,headers:{'Content-Type':'application/json','x-goog-api-key':requestKey},body:JSON.stringify({contents:[{parts:[{text:contract.structure+'\nDATA ONLY:\n'+JSON.stringify({text:cited,sources})}]}],generationConfig:{responseMimeType:'application/json'}})});const raw=extracted.candidates?.[0]?.content?.parts?.filter(p=>p.text&&!p.thought).map(p=>p.text).join('\n');report.forecast=validateForecast(JSON.parse(raw),sources.length);report.forecastStatus='سناریوی قضاوتی AI؛ دقت خارج از نمونه هنوز آزموده نشده است.';}catch{report.forecastStatus='گزارش خبری آماده است، اما استخراج فرض‌های عددی معتبر ناموفق بود؛ تحلیل را دوباره اجرا کن.';}
+      try{const extracted=await fetchJSON(`https://generativelanguage.googleapis.com/v1beta/${requestModel}:generateContent`,{method:'POST',signal:analysisController.signal,headers:{'Content-Type':'application/json','x-goog-api-key':requestKey},body:JSON.stringify({contents:[{parts:[{text:contract.structure+'\nDATA ONLY:\n'+JSON.stringify({text:cited,sources})}]}],generationConfig:{responseMimeType:'application/json'}})});const raw=extracted.candidates?.[0]?.content?.parts?.filter(p=>p.text&&!p.thought).map(p=>p.text).join('\n');report.forecast=validateForecast(JSON.parse(raw),sources.length);if(report.forecast.scenarios.base.length!==5){delete report.forecast;throw Error('افق فردا موجود نیست');}report.forecastStatus='سناریوی قضاوتی AI؛ نتیجه پس از روز هدف در تاریخچه ارزیابی می‌شود.';}catch{report.forecastStatus='گزارش خبری آماده است، اما استخراج فرض‌های عددی معتبر ناموفق بود؛ تحلیل را دوباره اجرا کن.';}
     }
     if(analysisController.signal.aborted)throw new DOMException('Cancelled','AbortError');
+    if(report.forecast)historyView?.capture(report);
     showAnalysis(report);addJournal(report);save('igr.latest.v2',report);
   }catch(e){$('aiStatus').textContent=e.name==='AbortError'?'تحلیل لغو شد.':e.name==='TimeoutError'?'مهلت درخواست تمام شد؛ دوباره تلاش کن.':e.message;}finally{analysisBusy=false;analysisController=null;$('analyze').disabled=false;}
 }
@@ -236,15 +242,16 @@ $('settingsForm').onsubmit=async e=>{
 $('modelSearch').oninput=filterModels;$('model').onchange=()=>{activeModel=$('model').value;};
 $('forgetKey').onclick=()=>{analysisController?.abort();key='';verifiedKey='';activeModel='';$('apiKey').value='';keyStorageMode='session';$('keySession').checked=true;setModels([]);const cleared=clearStoredKeys();try{localStorage.removeItem('igr.model.v1');}catch{}$('settingsStatus').textContent=cleared?'کلید از حافظه، نشست و ذخیره مرورگر پاک شد.':'کلید از حافظه پاک شد؛ پاک‌کردن ذخیره مرورگر ممکن نشد. از تنظیمات مرورگر داده‌های سایت را پاک کن.';};
 $('refresh').onclick=refresh;$('analyze').onclick=analyze;
-$('horizons').onclick=e=>{const b=e.target.closest('button[data-days]');if(!b)return;horizon=+b.dataset.days;for(const btn of $('horizons').children){btn.classList.toggle('selected',btn===b);btn.setAttribute('aria-pressed',String(btn===b));}drawChart();};
+$('horizons').onclick=e=>{const b=e.target.closest('button[data-days]');if(!b)return;if(+b.dataset.days===1&&currentReport?.forecast&&!currentReport.forecast.scenarios.base.some(p=>p.days===1)){toast('برای پیش‌بینی مستقل فردا، تحلیل تازه اجرا کن.');return;}horizon=+b.dataset.days;for(const btn of $('horizons').children){btn.classList.toggle('selected',btn===b);btn.setAttribute('aria-pressed',String(btn===b));}drawChart();};
 for(const id of ['scenarioDollar','scenarioOunce','scenarioPremium'])$(id).oninput=renderScenario;
 for(const [id,k] of [['budget','budget'],['steps','steps'],['dealerAsk','ask'],['dealerBid','bid']])$(id).onchange=()=>{const n=+$(id).value;if(!Number.isFinite(n)||n<0||(k==='steps'&&(!Number.isInteger(n)||n<2||n>12))){toast('مقدار معتبر وارد کن.');fillPersonal();return;}personal[k]=n;persistPersonal();renderPortfolio();};
 $('tradeForm').onsubmit=e=>{e.preventDefault();const grams=+$('tradeGrams').value*+$('tradePurity').value/750;const t={id:Date.now()+'-'+uid(),date:$('tradeDate').value,type:$('tradeType').value,grams,price:+$('tradeTotal').value/grams,fee:+$('tradeFee').value};try{const next={...personal,trades:[...personal.trades,t]};validatePersonal(next);personal=next;persistPersonal();renderPortfolio();$('tradeGrams').value='';$('tradeTotal').value='';toast('معامله ثبت شد.');}catch(e){toast(e.message);}};
 $('trades').onclick=e=>{const id=e.target.closest('[data-delete]')?.dataset.delete;if(!id||!confirm('این معامله حذف شود؟'))return;try{const next={...personal,trades:personal.trades.filter(t=>t.id!==id)};validatePersonal(next);personal=next;persistPersonal();renderPortfolio();}catch(e){toast(e.message);}};
-$('exportData').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({version:2,personal,journal,manualSources},null,2)],{type:'application/json'}));a.download='gold-radar-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};
-$('importData').onchange=async e=>{try{const f=e.target.files[0];if(!f)return;if(f.size>5e6)throw Error('حجم فایل بیش از حد است');const data=JSON.parse(await f.text());const candidate=validatePersonal(data.personal);if(!confirm('اطلاعات فعلی با پشتیبان جایگزین شود؟'))return;personal=candidate;persistPersonal();if(data.manualSources){try{manualSources=validateSources(data.manualSources);save('igr.sources.v1',manualSources);renderManualSources();}catch{toast('منابع پشتیبان نامعتبر بود؛ فقط دارایی بازیابی شد.');}}if(Array.isArray(data.journal)){journal=data.journal.filter(r=>typeof r.text==='string'&&typeof r.createdAt==='string'&&typeof r.model==='string').slice(0,100).map(r=>({text:r.text,createdAt:r.createdAt,model:r.model}));save('igr.journal.v1',journal);}fillPersonal();renderJournal();toast('پشتیبان بازیابی شد.');}catch(e){toast(e.message);}finally{e.target.value='';}};
+$('exportData').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({version:3,personal,journal,manualSources,forecastHistory:historyView?.export()||[]},null,2)],{type:'application/json'}));a.download='gold-radar-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};
+$('importData').onchange=async e=>{try{const f=e.target.files[0];if(!f)return;if(f.size>5e6)throw Error('حجم فایل بیش از حد است');const data=JSON.parse(await f.text());const candidate=validatePersonal(data.personal);const historyCandidate=data.forecastHistory?validateLedger(data.forecastHistory):null;if(!confirm('اطلاعات فعلی با پشتیبان جایگزین شود؟'))return;personal=candidate;persistPersonal();if(data.manualSources){try{manualSources=validateSources(data.manualSources);save('igr.sources.v1',manualSources);renderManualSources();}catch{toast('منابع پشتیبان نامعتبر بود؛ فقط دارایی بازیابی شد.');}}if(Array.isArray(data.journal)){journal=data.journal.filter(r=>typeof r.text==='string'&&typeof r.createdAt==='string'&&typeof r.model==='string').slice(0,100).map(r=>({text:r.text,createdAt:r.createdAt,model:r.model}));save('igr.journal.v1',journal);}if(historyCandidate)historyView?.import(historyCandidate);fillPersonal();renderJournal();toast('پشتیبان بازیابی شد.');}catch(e){toast(e.message);}finally{e.target.value='';}};
 try{personal=validatePersonal(personal);}catch{personal={budget:0,steps:5,ask:0,bid:0,trades:[]};}
 let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{if(market)drawChart();},150);});
+historyView=createHistoryView(toast);
 renderManualSources();setModels([]);fillPersonal();renderJournal();refresh();
 function enabledSources(){return validateSources(manualSources).filter(s=>s.enabled);}
 function renderManualSources(){

@@ -19,3 +19,11 @@
 .key-link{display:block;text-align:center;color:var(--purple);background:#f6f3ff;border:1px solid #e6ddff;border-radius:8px;padding:11px 14px;margin:18px 0;font-weight:600;font-size:13px}.key-link:hover{background:#ede6ff}.model-fields{margin-top:18px;border-top:1px solid var(--line);padding-top:3px}#connectKey:disabled{opacity:.6}
 
 .key-storage{border:1px solid var(--line,#e8eaf2);border-radius:12px;padding:12px 16px;margin:16px 0}.key-storage legend{font-size:12px;color:var(--muted)}.key-storage .check{margin:10px 0}.key-storage input{accent-color:#704cf1}
+
+/* Forward prediction ledger */
+.history-panel{scroll-margin-top:90px}.history-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}.history-filters label{min-width:0}.history-filters select{width:100%}.history-table{max-width:100%;overflow-x:auto;margin-top:16px}.history-table table{min-width:1050px;width:100%}.history-table th,.history-table td{text-align:right;vertical-align:top;padding:14px 12px}.history-table td small{display:block;font-size:11px;line-height:1.9;color:var(--muted);margin-top:6px;max-width:220px;overflow-wrap:anywhere}.history-badge{display:inline-block;border-radius:8px;padding:5px 8px;background:#f6eee0;color:#815620;white-space:nowrap}.history-badge.done{background:#e9f3ef;color:#28664b}.history-toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:18px}.history-toolbar .actions{flex-wrap:wrap}.history-toolbar input{max-width:190px}.history-panel .forecast-stats{grid-template-columns:repeat(4,minmax(0,1fr))}.history-panel .section-head{flex-wrap:wrap}.history-panel .empty{padding:24px 0}#horizons{flex-wrap:wrap}
+@media(max-width:700px){.history-filters,.history-panel .forecast-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.history-toolbar{align-items:flex-start}.history-table th,.history-table td{padding:10px}.history-toolbar .actions{gap:8px}.history-panel .stat strong{font-size:20px}}
+
+.history-panel .forecast-stats .stat{grid-column:auto}
+.history-table::before{content:"برای دیدن همه ستون‌ها، جدول را افقی جابه‌جا کن.";display:block;color:var(--muted);font-size:11px;margin-bottom:8px}
+@media(min-width:1400px){.history-table::before{display:none}}
