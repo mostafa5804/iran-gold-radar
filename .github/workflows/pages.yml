@@ -12,6 +12,10 @@ on:
         description: 'Exact Gemini model ID (empty keeps selected server model; first choice is gemini-3.8-flash when available)'
         type: string
         default: ''
+      sources_json:
+        description: 'Optional public sources JSON array (content goes to Google; reports and workflow metadata may be public)'
+        type: string
+        default: ''
   schedule:
     - cron: '17 * * * *'
 permissions:
@@ -37,6 +41,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
+          MANUAL_SOURCES: ${{ inputs.sources_json }}
           REQUESTED_MODEL: ${{ inputs.model }}
           FORCE_ANALYSIS: ${{ inputs.force_analysis && 'true' || 'false' }}
         run: python3 scripts/analyze.py
