@@ -76,7 +76,7 @@ def main():
         MODELS.write_text(json.dumps({'updatedAt':now.isoformat(),'models':models,'selectedModel':'models/'+model},ensure_ascii=False,indent=2))
     except Exception as e:
         status('دریافت یا انتخاب مدل ناموفق: '+type(e).__name__+'. مدل درخواستی باید در فهرست واقعی API باشد؛ مدل جایگزین خودکار اجرا نشد.');return
-    if old.get('createdAt') and old.get('schemaVersion') == 3 and not os.environ.get('MANUAL_SOURCES','').strip() and old.get('model')==model and os.environ.get('FORCE_ANALYSIS') != 'true':
+    if old.get('createdAt') and old.get('schemaVersion') == 3 and old.get('forecast') and not os.environ.get('MANUAL_SOURCES','').strip() and old.get('model')==model and os.environ.get('FORCE_ANALYSIS') != 'true':
         if (now-dt.datetime.fromisoformat(old['createdAt'])).total_seconds() < 6*3600:
             print('Reuse research younger than 6 hours.'); return
     market = json.loads((ROOT/'public/data/market.json').read_text())
@@ -124,6 +124,9 @@ def main():
             report['forecastStatus']='سناریوی قضاوتی AI؛ آزمون دقت خارج از نمونه هنوز انجام نشده است.'
         except Exception as e:
             print('Forecast extraction unavailable:',type(e).__name__)
+            if isinstance(e,subprocess.CalledProcessError):
+                report['forecastStatus']='اعتبارسنجی فرض‌ها ناموفق: '+e.stderr[:150]
+                print('Validation:',e.stderr[:150])
         serialized=json.dumps(report,ensure_ascii=False,indent=2)
         # Defense in depth: never publish a reflected credential.
         if key in serialized: raise ValueError('Credential reflection')
