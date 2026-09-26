@@ -55,3 +55,7 @@ Actual-data comparison evidence: `/workspace/scratch/gold-radar-real-qa.jpg` and
 Asset cache coherence: versioned CSS/JS URLs added for 0.2.1 after observing mixed cached assets immediately after Pages deployment. Research contract requests use no-store.
 
 final result: passed
+
+## v0.3.0 — personal API key flow
+
+PASS: preview settings inspected at desktop viewport; light dialog, Google AI Studio link, masked key field, opt-in session retention, accessible model selector and clear-key action are visible. Empty submission stays in dialog and explains that a personal key is required. No server/GitHub credential controls remain. Shared AI workflow and published reports/catalog removed; 12 Node and 3 Python tests pass. Actual Google execution with a visitor key was not exercised in this QA pass; no credentials were entered. Existing forecasting contract and validation are preserved.
