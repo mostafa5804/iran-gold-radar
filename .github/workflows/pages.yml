@@ -8,6 +8,10 @@ on:
         description: 'Refresh Gemini research even if younger than 6 hours (may incur API charges)'
         type: boolean
         default: false
+      model:
+        description: 'Exact Gemini model ID (empty keeps selected server model; first choice is gemini-3.8-flash when available)'
+        type: string
+        default: ''
   schedule:
     - cron: '17 * * * *'
 permissions:
@@ -32,7 +36,8 @@ jobs:
       - name: Grounded news analysis (optional secret)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-2.5-flash' }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
+          REQUESTED_MODEL: ${{ inputs.model }}
           FORCE_ANALYSIS: ${{ inputs.force_analysis && 'true' || 'false' }}
         run: python3 scripts/analyze.py
       - name: Keep market history
@@ -42,6 +47,7 @@ jobs:
           git add public/data/
           if ! git diff --cached --quiet; then
             git commit -m 'data: refresh market and research [skip ci]'
+            git pull --rebase origin main
             git push
           fi
       - uses: actions/upload-pages-artifact@v4

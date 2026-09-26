@@ -3,6 +3,7 @@ import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'scripts'))
 from collect import parse_quote, parse_history
+from analyze import choose_model
 
 class ParserTest(unittest.TestCase):
     def test_quote_converts_rials_once(self):
@@ -17,5 +18,11 @@ class ParserTest(unittest.TestCase):
         self.assertEqual(r['date'],'2026-09-20')
     def test_invalid_markup_fails_closed(self):
         with self.assertRaises(ValueError):parse_quote('blocked','geram18',10)
+    def test_model_preference_and_explicit_choice(self):
+        models=[{'name':'models/'+x} for x in ['gemini-2.5-flash','gemini-3.8-flash','gemini-3.1-pro-preview']]
+        self.assertEqual(choose_model(models),'gemini-3.8-flash')
+        self.assertEqual(choose_model(models,'gemini-3.1-pro-preview'),'gemini-3.1-pro-preview')
+        self.assertEqual(choose_model(models,previous='models/gemini-3.1-pro-preview'),'gemini-3.1-pro-preview')
+        with self.assertRaises(ValueError):choose_model(models,'gemini-invented')
 
 if __name__=='__main__': unittest.main()
