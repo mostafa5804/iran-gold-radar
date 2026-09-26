@@ -52,4 +52,6 @@ The first production extraction rejected range-valued assumptions. Updated the e
 
 Actual-data comparison evidence: `/workspace/scratch/gold-radar-real-qa.jpg` and `/workspace/scratch/gold-radar-qa-real-comparison.jpg`. Same viewport as earlier; actual state is 90-day/base whereas mock is annual/base, so numeric paths are intentionally different. Long inflation rationale originally introduced tiny internal scroll areas; replaced these with native disclosure controls and source links. Moved per-horizon reasoning into a disclosure to preserve chart density. Retested both controls and confirmed selected button states through `aria-pressed`. No new actionable P0/P1/P2 findings. App-origin console errors: none.
 
+Asset cache coherence: versioned CSS/JS URLs added for 0.2.1 after observing mixed cached assets immediately after Pages deployment. Research contract requests use no-store.
+
 final result: passed
