@@ -84,14 +84,15 @@ function drawChart(){
   $('validation').textContent='مسیرهای AI هنوز آزمون خارج از نمونه ندارند؛ درصد دقت یا احتمال رشد گزارش نمی‌شود. '+fmt(rows.length)+' روز تاریخچه موجود است.';
   renderForecastDetails(f);
 }
+function appendRefs(el,refs){for(const n of refs||[]){const url=safeURL(currentReport?.sources?.[n-1]?.uri);if(!url)continue;const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=' ['+n+']';a.style.color='var(--purple)';el.append(a);}}
 function renderForecastDetails(f){
-  for(const [id,key] of [['iran','inflationIran'],['us','inflationUS']]){ $(id==='iran'?'iranInflation':'usInflation').textContent=f&&f[key].annualPct!==null?fmt(f[key].annualPct,1)+'٪ · فرض ۱۲ ماه آینده':'داده کافی نداریم';$(id+'Basis').textContent=f?f[key].basis:'نیاز به تحلیل مستند تازه';}
-  if(!f){$('factorAssumptions').textContent='در انتظار فرض‌های تازه';$('returnsTable').textContent='فرض‌های معتبر برای محاسبه بازده در دسترس نیست.';$('drivers').textContent='با تحلیل تازه، عوامل مؤثر و منابعشان اینجا نمایش داده می‌شوند.';return;}
+  for(const [id,key] of [['iran','inflationIran'],['us','inflationUS']]){ $(id==='iran'?'iranInflation':'usInflation').textContent=f&&f[key].annualPct!==null?fmt(f[key].annualPct,1)+'٪ · فرض ۱۲ ماه آینده':'داده کافی نداریم';$(id+'Basis').textContent=f?f[key].basis:'نیاز به تحلیل مستند تازه';if(f)appendRefs($(id+'Basis'),f[key].sourceRefs);}
+  if(!f){$('pointReason').textContent='تحلیل معتبر لازم است.';$('factorAssumptions').textContent='در انتظار فرض‌های تازه';$('returnsTable').textContent='فرض‌های معتبر برای محاسبه بازده در دسترس نیست.';$('drivers').textContent='با تحلیل تازه، عوامل مؤثر و منابعشان اینجا نمایش داده می‌شوند.';return;}
   const p=f.scenarios[selectedScenario].find(p=>p.days===horizon);
   $('factorAssumptions').textContent='دلار '+pct(p.dollarPct)+' · اونس '+pct(p.ouncePct)+' · صرف داخلی '+fmt(p.premiumPp,2)+' واحد درصد';$('factorAssumptions').title=p.reason;
   $('returnsTable').classList.remove('empty');$('returnsTable').innerHTML='<table><thead><tr><th>افق</th><th>اسمی</th><th>پس از تورم</th></tr></thead><tbody>'+HORIZONS.map(days=>{const p=pathPoint(f,selectedScenario,days,currentReport.forecastAnchor),n=100*(p.nominal/currentReport.forecastAnchor.gold-1),r=p.real===null?null:100*(p.real/currentReport.forecastAnchor.gold-1);return `<tr><td>${{7:'هفته',30:'ماه',90:'۳ ماه',365:'سال'}[days]}</td><td class="${n>=0?'up':'down'}">${pct(n)}</td><td class="${r===null?'':r>=0?'up':'down'}">${pct(r)}</td></tr>`;}).join('')+'</tbody></table>';
   $('drivers').classList.remove('empty');$('drivers').innerHTML=f.drivers.map(d=>`<article class="driver"><h3>${esc(d.title)}</h3><p>${esc(d.summary)} ${d.sourceRefs.map(n=>{const s=currentReport.sources[n-1],url=safeURL(s?.uri);return url?`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">[${n}]</a>`:'';}).join('')}</p></article>`).join('');
-  $('forecastExplanation').textContent+=' '+p.reason;
+  $('pointReason').textContent=p.reason;appendRefs($('pointReason'),p.sourceRefs);
 }
 function renderScenario(){
   const values=['Dollar','Ounce','Premium'].map(k=>{const v=+$('scenario'+k).value;$('scenario'+k+'Out').textContent=pct(v);return v;});
@@ -237,7 +238,7 @@ $('analysisMode').onchange=showMode;$('modelSearch').oninput=filterModels;$('mod
 $('copyModel').onclick=async()=>{try{await navigator.clipboard.writeText($('model').value.replace('models/',''));$('settingsStatus').textContent='شناسه مدل کپی شد.';}catch{$('settingsStatus').textContent=$('model').value.replace('models/','');}};
 $('forgetKey').onclick=()=>{key='';githubToken='';$('apiKey').value='';$('githubToken').value='';try{sessionStorage.removeItem('igr.key');}catch{}$('settingsStatus').textContent='کلیدها از حافظه و نشست این تب پاک شدند.';};
 $('refresh').onclick=refresh;$('analyze').onclick=analyze;
-$('horizons').onclick=e=>{const b=e.target.closest('button[data-days]');if(!b)return;horizon=+b.dataset.days;for(const btn of $('horizons').children)btn.classList.toggle('selected',btn===b);drawChart();};
+$('horizons').onclick=e=>{const b=e.target.closest('button[data-days]');if(!b)return;horizon=+b.dataset.days;for(const btn of $('horizons').children){btn.classList.toggle('selected',btn===b);btn.setAttribute('aria-pressed',String(btn===b));}drawChart();};
 for(const id of ['scenarioDollar','scenarioOunce','scenarioPremium'])$(id).oninput=renderScenario;
 for(const [id,k] of [['budget','budget'],['steps','steps'],['dealerAsk','ask'],['dealerBid','bid']])$(id).onchange=()=>{const n=+$(id).value;if(!Number.isFinite(n)||n<0||(k==='steps'&&(!Number.isInteger(n)||n<2||n>12))){toast('مقدار معتبر وارد کن.');fillPersonal();return;}personal[k]=n;persistPersonal();renderPortfolio();};
 $('tradeForm').onsubmit=e=>{e.preventDefault();const grams=+$('tradeGrams').value*+$('tradePurity').value/750;const t={id:Date.now()+'-'+uid(),date:$('tradeDate').value,type:$('tradeType').value,grams,price:+$('tradeTotal').value/grams,fee:+$('tradeFee').value};try{const next={...personal,trades:[...personal.trades,t]};validatePersonal(next);personal=next;persistPersonal();renderPortfolio();$('tradeGrams').value='';$('tradeTotal').value='';toast('معامله ثبت شد.');}catch(e){toast(e.message);}};
@@ -261,7 +262,7 @@ $('sourceType').onchange=()=>{$('sourceContent').placeholder=$('sourceType').val
 $('sourceForm').onsubmit=e=>{e.preventDefault();try{const next=validateSources([...manualSources,{id:uid(),title:$('sourceTitle').value.trim(),type:$('sourceType').value,content:$('sourceContent').value.trim(),date:$('sourceDate').value,enabled:true}]);manualSources=next;save('igr.sources.v1',manualSources);renderManualSources();$('sourceDialog').close();$('sourceForm').reset();toast('منبع ذخیره شد؛ با تحلیل تازه بررسی می‌شود.');}catch(e){$('sourceError').textContent=e.message;}};
 $('manualSources').onchange=e=>{const id=e.target.dataset.source;if(!id)return;manualSources=manualSources.map(s=>s.id===id?{...s,enabled:e.target.checked}:s);save('igr.sources.v1',manualSources);renderManualSources();};
 $('manualSources').onclick=e=>{const id=e.target.closest('[data-remove-source]')?.dataset.removeSource;if(!id)return;manualSources=manualSources.filter(s=>s.id!==id);save('igr.sources.v1',manualSources);renderManualSources();};
-$('scenarios').onclick=e=>{const b=e.target.closest('[data-scenario]');if(!b)return;selectedScenario=b.dataset.scenario;for(const btn of $('scenarios').children)btn.classList.toggle('selected',btn===b);drawChart();};
-$('priceMode').onclick=e=>{const b=e.target.closest('[data-mode]');if(!b)return;priceMode=b.dataset.mode;for(const btn of $('priceMode').children)btn.classList.toggle('selected',btn===b);drawChart();};
+$('scenarios').onclick=e=>{const b=e.target.closest('[data-scenario]');if(!b)return;selectedScenario=b.dataset.scenario;for(const btn of $('scenarios').children){btn.classList.toggle('selected',btn===b);btn.setAttribute('aria-pressed',String(btn===b));}drawChart();};
+$('priceMode').onclick=e=>{const b=e.target.closest('[data-mode]');if(!b)return;priceMode=b.dataset.mode;for(const btn of $('priceMode').children){btn.classList.toggle('selected',btn===b);btn.setAttribute('aria-pressed',String(btn===b));}drawChart();};
 
 $('mobileControls').onclick=()=>{const open=$('forecastControls').classList.toggle('mobile-open');$('mobileControls').setAttribute('aria-expanded',String(open));$('mobileControls').textContent=open?'بستن تنظیمات پیش‌بینی':'فرض‌ها، سناریو و منابع من';};

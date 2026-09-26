@@ -40,10 +40,16 @@ The forecast is a grounded, judgmental AI scenario model, not an empirically cal
 - [x] Fix actionable P1/P2 findings and compare revised captures.
 - [x] Test primary interactions and model arithmetic.
 - [x] Restore real report and remove test-only preview wrapper before committing.
-- [ ] Verify fresh server-generated forecast and deployed Pages after GitHub Actions.
+- [x] Verify fresh server-generated forecast and deployed Pages after GitHub Actions.
 
 ## Follow-up polish
 
 Optional: additional nonessential ticker icons. This does not block use or visual acceptance.
+
+## Real-data verification
+
+The first production extraction rejected range-valued assumptions. Updated the extraction contract to use the explicitly disclosed arithmetic midpoint of published AI scenario ranges, and to preserve unavailable inflation as null. The subsequent Gemini 3.8 Flash report (2026-09-26T17:49:29Z) contains 14 web sources and all 12 scenario points. No test forecast was published. Both local and public Pages rendered the same 90-day outcomes; nominal/real toggles and assumption citations passed.
+
+Actual-data comparison evidence: `/workspace/scratch/gold-radar-real-qa.jpg` and `/workspace/scratch/gold-radar-qa-real-comparison.jpg`. Same viewport as earlier; actual state is 90-day/base whereas mock is annual/base, so numeric paths are intentionally different. Long inflation rationale originally introduced tiny internal scroll areas; replaced these with native disclosure controls and source links. Moved per-horizon reasoning into a disclosure to preserve chart density. Retested both controls and confirmed selected button states through `aria-pressed`. No new actionable P0/P1/P2 findings. App-origin console errors: none.
 
 final result: passed
