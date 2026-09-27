@@ -41,3 +41,18 @@ class FinalHistoryTest(unittest.TestCase):
         now=dt.datetime.fromisoformat('2026-09-27T10:00:00+00:00')
         for stamp in (None,'2026-09-26 17:00:00','invalid'):
             self.assertNotIn('finalObservedAt',merge_history([],rows,10,now,source_page_time=stamp)[0])
+
+class SourceClockRegressionTest(unittest.TestCase):
+    def test_unpadded_hour_is_normalized_for_quote_and_history(self):
+        from collect import parse_page_time, merge_history
+        import datetime as dt
+        source='<div id="server-time" data-value="2026-09-27 1:16:38"></div><span data-col="info.last_trade.PDrCotVal">238298000</span>'
+        self.assertEqual(parse_quote(source,'geram18',10)['pageTime'],'2026-09-27 01:16:38')
+        self.assertEqual(parse_page_time('۲۰۲۶-۰۹-۲۷ ۱:۱۶:۳۸').hour,1)
+        rows=[{'date':'2026-09-26','open':100,'low':90,'high':120,'close':110}]
+        merged=merge_history([],rows,10,dt.datetime.fromisoformat('2026-09-27T01:28:21+00:00'),source_page_time='2026-09-27 1:16:38')
+        self.assertIn('finalObservedAt',merged[0])
+    def test_invalid_clock_and_calendar_are_rejected(self):
+        from collect import parse_page_time
+        for value in (None,'','2026-09-31 1:16:38','2026-09-27 24:00:00','2026-09-27 1:60:00'):
+            with self.assertRaises(ValueError):parse_page_time(value)

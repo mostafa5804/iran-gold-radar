@@ -1,5 +1,5 @@
 // Local forward-only forecast ledger. Never substitutes a live quote for a dated close.
-import {validateForecast,pathPoint} from './forecast.js?v=0.4.0';
+import {validateForecast,pathPoint} from './forecast.js?v=0.4.1';
 export const HISTORY_KEY='igr.forecast-history.v1';
 export const EVALUATION_DAYS=[1,7,30,90,365];
 export const DIRECTION_THRESHOLD=.1;

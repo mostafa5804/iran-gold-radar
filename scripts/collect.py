@@ -27,6 +27,16 @@ def cell(s, label):
     m = re.search(r'<td[^>]*>\s*' + re.escape(label) + r'\s*</td>\s*<td[^>]*>(.*?)</td>', s, re.S)
     return clean(m[1]) if m else None
 
+def parse_page_time(value):
+    # Source hours/minutes may be unpadded; never rely on ISO-only parsing.
+    if not isinstance(value, str):
+        raise ValueError('Missing source page time')
+    match = re.fullmatch(r'(\d{4})-(\d{1,2})-(\d{1,2})[ T](\d{1,2}):(\d{1,2}):(\d{1,2})', clean(value))
+    if not match:
+        raise ValueError('Invalid source page time')
+    return dt.datetime(*map(int, match.groups()), tzinfo=ZoneInfo('Asia/Tehran'))
+
+
 def parse_quote(s, slug, divisor):
     m = re.search(r'data-col="info.last_trade.PDrCotVal"[^>]*>(.*?)</span>', s, re.S)
     if not m:
@@ -34,7 +44,7 @@ def parse_quote(s, slug, divisor):
     v = number(m[1]) / divisor
     prev = cell(s, 'نرخ روز گذشته')
     server = re.search(r'id="server-time"[^>]*data-value="([^"]+)"', s)
-    stamp = server[1] if server else None
+    stamp = parse_page_time(server[1]).strftime('%Y-%m-%d %H:%M:%S') if server else None
     # Page time is NOT claimed as the quote's full timestamp. Source supplies a time label.
     return {'value': v, 'previous': number(prev) / divisor if prev else None,
             'unit': 'USD/oz' if divisor == 1 else 'IRT', 'source': 'TGJU',
@@ -66,7 +76,7 @@ def merge_history(existing, incoming, divisor, now=None, source_page_time=None):
     today = now.astimezone(ZoneInfo('Asia/Tehran')).date().isoformat()
     source_day = None
     try:
-        page = dt.datetime.fromisoformat(source_page_time).replace(tzinfo=ZoneInfo('Asia/Tehran'))
+        page = parse_page_time(source_page_time)
         if page <= now.astimezone(ZoneInfo('Asia/Tehran')) + dt.timedelta(minutes=5):
             source_day = page.date().isoformat()
     except (TypeError, ValueError):

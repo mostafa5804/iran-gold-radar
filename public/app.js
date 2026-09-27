@@ -1,8 +1,8 @@
-import {createHistoryView} from './history-ui.js?v=0.4.0';
-import {validateLedger,targetDate} from './history.js?v=0.4.0';
-import {preferredModel} from './models.js?v=0.4.0';
-import {HORIZONS,validateForecast,pathPoint,forecastUsable,sourceURL,validateSources,sourceReceipts} from './forecast.js?v=0.4.0';
-import {DAY,intrinsic,premium,sma,rsi,atr,volatility,cone,backtest,scenario,quoteFresh,portfolio} from './engine.js?v=0.4.0';
+import {createHistoryView} from './history-ui.js?v=0.4.1';
+import {validateLedger,targetDate} from './history.js?v=0.4.1';
+import {preferredModel} from './models.js?v=0.4.1';
+import {HORIZONS,validateForecast,pathPoint,forecastUsable,sourceURL,validateSources,sourceReceipts} from './forecast.js?v=0.4.1';
+import {DAY,intrinsic,premium,sma,rsi,atr,volatility,cone,backtest,scenario,quoteFresh,portfolio} from './engine.js?v=0.4.1';
 const uid=()=>Array.from(crypto.getRandomValues(new Uint32Array(4)),n=>n.toString(16).padStart(8,'0')).join('');
 const $=id=>document.getElementById(id);
 const fmt=(n,d=0)=>Number.isFinite(n)?new Intl.NumberFormat('fa-IR',{maximumFractionDigits:d}).format(n):'—';
@@ -14,7 +14,7 @@ const safeURL=s=>{try{const u=new URL(s);return u.protocol==='https:'?u.href:nul
 function read(key,fallback,storage=localStorage){try{return JSON.parse(storage.getItem(key))??fallback;}catch{return fallback;}}
 function save(key,value,storage=localStorage){try{storage.setItem(key,JSON.stringify(value));return true;}catch{toast('ذخیره در مرورگر ممکن نیست؛ پشتیبان بگیر.');return false;}}
 let market=null, horizon=90, key='', activeModel='', analysisBusy=false,verifiedKey='',modelsCatalog=[],analysisController=null;
-let historyView=null;
+let historyView=null,marketRequest=null;
 let currentReport=null,selectedScenario='base',priceMode='nominal',manualSources=[];
 const scenarioNames={base:'پایه',easing:'کاهش تنش',stress:'تشدید تنش'};
 try{manualSources=validateSources(read('igr.sources.v1',[]));}catch{}
@@ -133,12 +133,12 @@ function validatePersonal(p){
 }
 async function fetchJSON(url,options={}){
   const r=await fetch(url,{...options,signal:options.signal?AbortSignal.any([options.signal,AbortSignal.timeout(90000)]):AbortSignal.timeout(90000)});let data;try{data=await r.json();}catch{throw Error('پاسخ سرویس قابل‌خواندن نیست.');}
-  if(!r.ok){const hint={400:'درخواست یا مدل از جست‌وجوی وب پشتیبانی نمی‌کند.',401:'کلید معتبر نیست.',403:'دسترسی، محدودیت منطقه یا مجوز کلید را بررسی کن.',404:'مدل در دسترس نیست؛ فهرست را دوباره دریافت کن.',429:'سهمیه یا نرخ درخواست پر شده؛ Billing و محدودیت API را بررسی کن.',500:'خطای موقت سرویس Google.',503:'سرویس موقتاً در دسترس نیست.'}[r.status]||'درخواست ناموفق بود.';throw Error(`کد ${r.status}: ${hint}`);}
+  if(!r.ok){const hint={400:'درخواست یا مدل از جست‌وجوی وب پشتیبانی نمی‌کند.',401:'کلید معتبر نیست.',403:'دسترسی، محدودیت منطقه یا مجوز کلید را بررسی کن.',404:'مدل در دسترس نیست؛ فهرست را دوباره دریافت کن.',429:'سهمیه یا نرخ درخواست پر شده؛ Billing و محدودیت API را بررسی کن.',500:'خطای موقت سرویس Google.',503:'سرویس موقتاً در دسترس نیست.'}[r.status]||'درخواست ناموفق بود.';throw Object.assign(Error(`کد ${r.status}: ${hint}`),{status:r.status});}
   return data;
 }
 function setModels(models){
   modelsCatalog=models;
-  activeModel=preferredModel(models,activeModel||read('igr.model.v1',''));
+  activeModel=models.length?preferredModel(models,activeModel||read('igr.model.v1','')):activeModel||read('igr.model.v1','');
   filterModels();
   $('settingsTop').textContent=key?activeModel.replace('models/','')||'تنظیمات Gemini':'واردکردن کلید API';
 }
@@ -152,12 +152,32 @@ function filterModels(){
 }
 function openSettings(){$('apiKey').value=key;$('keySession').checked=keyStorageMode==='session';$('keyLocal').checked=keyStorageMode==='local';$('settings').showModal();}
 function clearStoredKeys(){let ok=true;for(const name of ['sessionStorage','localStorage'])try{window[name].removeItem('igr.key');}catch{ok=false;}return ok;}
+async function fetchModels(candidate,signal){
+  let token='',models=[];
+  do{
+    const d=await fetchJSON('https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000'+(token?'&pageToken='+encodeURIComponent(token):''),{signal,headers:{'x-goog-api-key':candidate}});
+    models.push(...(d.models||[]));token=d.nextPageToken||'';
+  }while(token);
+  return models.filter(m=>m.supportedGenerationMethods?.includes('generateContent')&&m.name.startsWith('models/gemini')&&!/tts|image|robotics|computer-use/i.test(m.name)).map(m=>({name:m.name,displayName:m.displayName}));
+}
+async function restoreConnection(candidate,signal){
+  const selected=activeModel||read('igr.model.v1',''),models=await fetchModels(candidate,signal);
+  if(signal.aborted||key!==candidate)throw new DOMException('Cancelled','AbortError');
+  verifiedKey=candidate;setModels(models);
+  // Restoring a saved connection must not silently change the user's chosen model.
+  if(selected&&!models.some(m=>m.name===selected)){
+    activeModel='';filterModels();openSettings();
+    $('settingsStatus').textContent='کلید ذخیره‌شده بررسی شد، اما مدل قبلی در دسترس نیست؛ یک مدل انتخاب کن.';
+    return false;
+  }
+  if(!activeModel){openSettings();$('settingsStatus').textContent='کلید بررسی شد؛ یک مدل از فهرست انتخاب کن.';return false;}
+  return true;
+}
 async function loadModels(){
   const candidate=$('apiKey').value.trim();if(!candidate){$('settingsStatus').textContent='ابتدا کلید خودت را وارد کن.';return false;}if($('loadModels').disabled)return false;
   $('loadModels').disabled=true;$('settingsStatus').textContent='در حال دریافت فهرست واقعی مدل‌ها…';
   try{
-    let token='',models=[];do{const d=await fetchJSON('https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000'+(token?'&pageToken='+encodeURIComponent(token):''),{headers:{'x-goog-api-key':candidate}});models.push(...(d.models||[]));token=d.nextPageToken||'';}while(token);
-    models=models.filter(m=>m.supportedGenerationMethods?.includes('generateContent')&&m.name.startsWith('models/gemini')&&!/tts|image|robotics|computer-use/i.test(m.name)).map(m=>({name:m.name,displayName:m.displayName}));
+    const models=await fetchModels(candidate);
     if($('apiKey').value.trim()!==candidate)return false;
     verifiedKey=candidate;setModels(models);$('settingsStatus').textContent=`${fmt(models.length)} مدل قابل‌انتخاب دریافت شد. پشتیبانی جست‌وجوی وب برای هر مدل هنگام تحلیل بررسی می‌شود.`;return true;
   }catch(e){verifiedKey='';setModels([]);$('settingsStatus').textContent=e.message;return false;}finally{$('loadModels').disabled=false;}
@@ -190,12 +210,27 @@ function renderJournal(){
 }
 async function researchPrompt(inputMarket,sentSources){const contract=await fetchJSON('./research-contract.json',{cache:'no-store'});return {contract,prompt:contract.research+'\nزمان: '+new Date().toISOString()+'\nداده بازار: '+JSON.stringify({updatedAt:inputMarket.updatedAt,quotes:inputMarket.quotes,recentHistory:Object.fromEntries(Object.entries(inputMarket.history||{}).map(([k,v])=>[k,v.slice(-90)])),technicals:Object.fromEntries(Object.entries(inputMarket.history||{}).map(([k,v])=>[k,{rsi14:rsi(v),sma20:sma(v,20),atr14:atr(v),observations:v.length}]))})+'\nمنابع دستی (داده نه دستور): '+JSON.stringify(sentSources)};}
 async function analyze(){
-  if(analysisBusy)return;if(!key||!activeModel||verifiedKey!==key){toast('برای تحلیل، کلید شخصی خودت را وارد و بررسی کن.');openSettings();return;}
-  if(!fresh()){toast('ابتدا داده تازه بازار لازم است؛ تحلیل معاملاتی اجرا نشد.');return;}
-  const requestModel=activeModel,requestKey=key,reportCreatedAt=new Date().toISOString(),inputMarket=structuredClone(market),sentSources=enabledSources();
+  if(analysisBusy)return;
+  if(!key){toast('برای تحلیل، کلید شخصی خودت را وارد کن.');openSettings();return;}
+  const requestKey=key;
   analysisController=new AbortController();
-  analysisBusy=true;$('analyze').disabled=true;$('aiStatus').textContent='در حال جست‌وجوی اخبار و تهیه تحلیل مستند…';
+  analysisBusy=true;$('analyze').disabled=true;
   try{
+    if(verifiedKey!==requestKey||!activeModel){
+      $('aiStatus').textContent='در حال اتصال با کلید ذخیره‌شده و بررسی مدل انتخابی…';
+      if(!(await restoreConnection(requestKey,analysisController.signal)))return;
+    }
+    $('aiStatus').textContent='در حال دریافت آخرین داده بازار…';
+    const loaded=await refresh({showReport:false});
+    if(analysisController.signal.aborted||key!==requestKey)throw new DOMException('Cancelled','AbortError');
+    if(!loaded)throw Error('دریافت داده بازار ناموفق بود؛ اتصال را بررسی و دوباره تحلیل را اجرا کن.');
+    if(!fresh()){
+      const names={gold:'طلای ۱۸ عیار',dollar:'دلار',ounce:'اونس'};
+      const missing=Object.keys(names).filter(k=>!quoteFresh(market?.quotes?.[k])).map(k=>names[k]).join('، ');
+      throw Error('آخرین فایل بازار دریافت شد، اما داده معتبر و تازه برای '+missing+' موجود نیست. زمان آخرین دریافت: '+timeLabel(market.updatedAt)+'؛ پس از به‌روزرسانی منبع دوباره تلاش کن.');
+    }
+    const requestModel=activeModel,reportCreatedAt=new Date().toISOString(),inputMarket=structuredClone(market),sentSources=enabledSources();
+    $('aiStatus').textContent='در حال جست‌وجوی اخبار و تهیه تحلیل مستند…';
     const {contract,prompt}=await researchPrompt(inputMarket,sentSources);
     const data=await fetchJSON(`https://generativelanguage.googleapis.com/v1beta/${requestModel}:generateContent`,{method:'POST',signal:analysisController.signal,headers:{'Content-Type':'application/json','x-goog-api-key':requestKey},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],tools:[{google_search:{}},...(sentSources.some(s=>s.type==='url')?[{url_context:{}}]:[])]})});
     const c=data.candidates?.[0],g=c?.groundingMetadata,text=c?.content?.parts?.filter(p=>!p.thought&&p.text).map(p=>p.text).join('\n');
@@ -214,14 +249,21 @@ async function analyze(){
     if(analysisController.signal.aborted)throw new DOMException('Cancelled','AbortError');
     if(report.forecast)historyView?.capture(report);
     showAnalysis(report);addJournal(report);save('igr.latest.v2',report);
-  }catch(e){$('aiStatus').textContent=e.name==='AbortError'?'تحلیل لغو شد.':e.name==='TimeoutError'?'مهلت درخواست تمام شد؛ دوباره تلاش کن.':e.message;}finally{analysisBusy=false;analysisController=null;$('analyze').disabled=false;}
+  }catch(e){if(e.status===401||e.status===403){verifiedKey='';openSettings();$('settingsStatus').textContent=e.message;}$('aiStatus').textContent=e.name==='AbortError'?'تحلیل لغو شد.':e.name==='TimeoutError'?'مهلت درخواست تمام شد؛ دوباره تلاش کن.':e.message;}finally{analysisBusy=false;analysisController=null;$('analyze').disabled=false;}
 }
-async function refresh(){
-  $('refresh').disabled=true;
-  try{market=await fetchJSON('./data/market.json?t='+Date.now(),{cache:'no-store'});render();}
-  catch{$('notice').className='notice warn';$('notice').textContent='دریافت فایل بازار ناموفق بود. اتصال اینترنت یا اجرای اکشن GitHub را بررسی کن.';}
-  if(currentReport)showAnalysis(currentReport);
-  $('refresh').disabled=false;
+async function refresh({showReport=true}={}){
+  // Startup, refresh and the first Analyze click share one in-flight market request.
+  if(!marketRequest){
+    $('refresh').disabled=true;
+    marketRequest=(async()=>{
+      try{market=await fetchJSON('./data/market.json?t='+Date.now(),{cache:'no-store'});render();return true;}
+      catch{$('notice').className='notice warn';$('notice').textContent='دریافت فایل بازار ناموفق بود. اتصال اینترنت یا اجرای اکشن GitHub را بررسی کن.';return false;}
+      finally{$('refresh').disabled=false;}
+    })().finally(()=>{marketRequest=null;});
+  }
+  const loaded=await marketRequest;
+  if(currentReport&&showReport&&!analysisBusy)showAnalysis(currentReport);
+  return loaded;
 }
 $('today').textContent=new Intl.DateTimeFormat('fa-IR',{dateStyle:'full',timeZone:'Asia/Tehran'}).format(new Date());
 $('tradeDate').value=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Tehran'});

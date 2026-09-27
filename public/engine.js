@@ -41,9 +41,20 @@ export function backtest(rows,horizon=7){
 export function scenario(gold, dollarPct, ouncePct, premiumPoints, currentPremium) {
   return gold*(1+dollarPct/100)*(1+ouncePct/100)*(1+(currentPremium+premiumPoints)/100)/(1+currentPremium/100);
 }
+// TGJU emits both "01:16:38" and "1:16:38". Parse Tehran wall time explicitly.
+export function sourcePageTime(value){
+  if(typeof value!=='string')return NaN;
+  const normalized=value.trim().replace(/[۰-۹]/g,c=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(c))).replace(/[٠-٩]/g,c=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(c)));
+  const m=normalized.match(/^(\d{4})-(\d{1,2})-(\d{1,2})[ T](\d{1,2}):(\d{1,2}):(\d{1,2})$/);
+  if(!m)return NaN;
+  const [year,month,day,hour,minute,second]=m.slice(1).map(Number);
+  const utc=Date.UTC(year,month-1,day,hour,minute,second),d=new Date(utc);
+  if(d.getUTCFullYear()!==year||d.getUTCMonth()!==month-1||d.getUTCDate()!==day||d.getUTCHours()!==hour||d.getUTCMinutes()!==minute||d.getUTCSeconds()!==second)return NaN;
+  return utc-3.5*3600000;
+}
 export function quoteFresh(q,now=Date.now()) {
   if(!q||q.status!=='ok'||!(q.value>0))return false;
-  const fetched=Date.parse(q.fetchedAt), page=q.pageTime?Date.parse(q.pageTime.replace(' ','T')+'+03:30'):NaN;
+  const fetched=Date.parse(q.fetchedAt), page=sourcePageTime(q.pageTime);
   // Reject absent/old source-page dates even if a cache was fetched just now.
   return Number.isFinite(page)&&now-fetched>=-300000&&now-fetched<6*3600000&&now-page>=-4*3600000&&now-page<36*3600000;
 }

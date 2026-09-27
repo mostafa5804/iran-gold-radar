@@ -1,4 +1,4 @@
-import {HISTORY_KEY,validateLedger,mergeLedger,captureForecast,evaluateLedger,summarize,csvCell} from './history.js?v=0.4.0';
+import {HISTORY_KEY,validateLedger,mergeLedger,captureForecast,evaluateLedger,summarize,csvCell} from './history.js?v=0.4.1';
 const $=id=>document.getElementById(id);
 const fmt=(n,d=0)=>Number.isFinite(n)?new Intl.NumberFormat('fa-IR',{maximumFractionDigits:d}).format(n):'—';
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
