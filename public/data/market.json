@@ -1,18 +1,7 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-02T18:25:23.067875+00:00",
+  "updatedAt": "2026-10-02T22:58:40.074637+00:00",
   "quotes": {
-    "gold": {
-      "value": 25694400.0,
-      "previous": 25694400.0,
-      "unit": "IRT",
-      "source": "TGJU",
-      "url": "https://www.tgju.org/profile/geram18",
-      "sourceTimeLabel": "9 مهر",
-      "pageTime": "2026-10-02 16:34:06",
-      "fetchedAt": "2026-10-02T18:25:23.163582+00:00",
-      "status": "ok"
-    },
     "dollar": {
       "value": 258465.0,
       "previous": 258465.0,
@@ -20,19 +9,30 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/price_dollar_rl",
       "sourceTimeLabel": "9 مهر",
-      "pageTime": "2026-10-02 16:34:08",
-      "fetchedAt": "2026-10-02T18:25:23.187234+00:00",
+      "pageTime": "2026-10-02 22:34:24",
+      "fetchedAt": "2026-10-02T22:58:40.193519+00:00",
+      "status": "ok"
+    },
+    "gold": {
+      "value": 25694400.0,
+      "previous": 25694400.0,
+      "unit": "IRT",
+      "source": "TGJU",
+      "url": "https://www.tgju.org/profile/geram18",
+      "sourceTimeLabel": "9 مهر",
+      "pageTime": "2026-10-02 22:34:25",
+      "fetchedAt": "2026-10-02T22:58:40.199919+00:00",
       "status": "ok"
     },
     "ounce": {
-      "value": 4136.65,
-      "previous": 4175.95,
+      "value": 4140.19,
+      "previous": 4141.67,
       "unit": "USD/oz",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": "20:04:39",
-      "pageTime": "2026-10-02 16:34:48",
-      "fetchedAt": "2026-10-02T18:25:23.221220+00:00",
+      "sourceTimeLabel": "01:54:16",
+      "pageTime": "2026-10-02 22:34:58",
+      "fetchedAt": "2026-10-02T22:58:40.261780+00:00",
       "status": "ok"
     }
   },
@@ -1111,6 +1111,15 @@
         "source": "TGJU",
         "unit": "USD/oz",
         "finalObservedAt": "2026-10-02T05:39:26.549676+00:00"
+      },
+      {
+        "date": "2026-10-02",
+        "open": 4174.5,
+        "low": 4126.54,
+        "high": 4222.95,
+        "close": 4143.37,
+        "source": "TGJU",
+        "unit": "USD/oz"
       }
     ]
   },
