@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-04T00:38:42.646753+00:00",
+  "updatedAt": "2026-10-04T06:50:03.549256+00:00",
   "quotes": {
     "gold": {
       "value": 26225300.0,
@@ -9,8 +9,8 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/geram18",
       "sourceTimeLabel": "11 مهر",
-      "pageTime": "2026-10-03 23:29:50",
-      "fetchedAt": "2026-10-04T00:38:42.839038+00:00",
+      "pageTime": "2026-10-04 05:29:56",
+      "fetchedAt": "2026-10-04T06:50:03.771612+00:00",
       "status": "ok"
     },
     "dollar": {
@@ -20,8 +20,8 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/price_dollar_rl",
       "sourceTimeLabel": "11 مهر",
-      "pageTime": "2026-10-03 23:29:55",
-      "fetchedAt": "2026-10-04T00:38:42.848886+00:00",
+      "pageTime": "2026-10-04 06:17:25",
+      "fetchedAt": "2026-10-04T06:50:03.780243+00:00",
       "status": "ok"
     },
     "ounce": {
@@ -31,8 +31,8 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
       "sourceTimeLabel": "11 مهر",
-      "pageTime": "2026-10-03 23:30:26",
-      "fetchedAt": "2026-10-04T00:38:42.898425+00:00",
+      "pageTime": "2026-10-04 05:30:39",
+      "fetchedAt": "2026-10-04T06:50:03.835032+00:00",
       "status": "ok"
     }
   },
@@ -405,7 +405,8 @@
         "high": 26514400.0,
         "close": 26225300.0,
         "source": "TGJU",
-        "unit": "IRT"
+        "unit": "IRT",
+        "finalObservedAt": "2026-10-04T06:50:03.765163+00:00"
       }
     ],
     "dollar": [
@@ -776,7 +777,8 @@
         "high": 268520.0,
         "close": 267900.0,
         "source": "TGJU",
-        "unit": "IRT"
+        "unit": "IRT",
+        "finalObservedAt": "2026-10-04T06:50:03.807404+00:00"
       }
     ],
     "ounce": [
@@ -1147,7 +1149,8 @@
         "high": 4142.22,
         "close": 4140.19,
         "source": "TGJU",
-        "unit": "USD/oz"
+        "unit": "USD/oz",
+        "finalObservedAt": "2026-10-04T06:50:03.835930+00:00"
       }
     ]
   },
