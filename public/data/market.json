@@ -1,38 +1,38 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-07T16:30:09.176033+00:00",
+  "updatedAt": "2026-10-07T21:59:28.020684+00:00",
   "quotes": {
     "gold": {
-      "value": 26259500.0,
-      "previous": 26738300.0,
+      "value": 26281200.0,
+      "previous": 26281200.0,
       "unit": "IRT",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/geram18",
-      "sourceTimeLabel": "19:28:05",
-      "pageTime": "2026-10-07 15:57:41",
-      "fetchedAt": "2026-10-07T16:30:09.437351+00:00",
+      "sourceTimeLabel": "15 مهر",
+      "pageTime": "2026-10-07 21:57:47",
+      "fetchedAt": "2026-10-07T21:59:28.567300+00:00",
       "status": "ok"
     },
     "dollar": {
-      "value": 262895.0,
+      "value": 263200.0,
       "previous": 268820.0,
       "unit": "IRT",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/price_dollar_rl",
-      "sourceTimeLabel": "19:28:57",
-      "pageTime": "2026-10-07 15:58:57",
-      "fetchedAt": "2026-10-07T16:30:09.456790+00:00",
+      "sourceTimeLabel": "19:59:58",
+      "pageTime": "2026-10-07 19:59:01",
+      "fetchedAt": "2026-10-07T21:59:28.574104+00:00",
       "status": "ok"
     },
     "ounce": {
-      "value": 4106.21,
+      "value": 4102.05,
       "previous": 4163.14,
       "unit": "USD/oz",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": "19:31:19",
-      "pageTime": "2026-10-07 16:02:11",
-      "fetchedAt": "2026-10-07T16:30:09.632964+00:00",
+      "sourceTimeLabel": "23:31:54",
+      "pageTime": "2026-10-07 20:02:16",
+      "fetchedAt": "2026-10-07T21:59:28.711782+00:00",
       "status": "ok"
     }
   },
@@ -1231,6 +1231,15 @@
         "source": "TGJU",
         "unit": "USD/oz",
         "finalObservedAt": "2026-10-07T01:33:20.673236+00:00"
+      },
+      {
+        "date": "2026-10-07",
+        "open": 4162.84,
+        "low": 4069.53,
+        "high": 4169.49,
+        "close": 4111.7,
+        "source": "TGJU",
+        "unit": "USD/oz"
       }
     ]
   },
