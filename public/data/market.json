@@ -1,7 +1,18 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-07T01:33:19.953363+00:00",
+  "updatedAt": "2026-10-07T08:40:53.324473+00:00",
   "quotes": {
+    "ounce": {
+      "value": 4166.34,
+      "previous": 4163.14,
+      "unit": "USD/oz",
+      "source": "TGJU",
+      "url": "https://www.tgju.org/profile/ons",
+      "sourceTimeLabel": "03:16:51",
+      "pageTime": "2026-10-06 23:46:32",
+      "fetchedAt": "2026-10-07T01:33:20.582184+00:00",
+      "status": "stale"
+    },
     "gold": {
       "value": 26738300.0,
       "previous": 26738300.0,
@@ -11,7 +22,7 @@
       "sourceTimeLabel": "14 مهر",
       "pageTime": "2026-10-06 23:46:01",
       "fetchedAt": "2026-10-07T01:33:20.290684+00:00",
-      "status": "ok"
+      "status": "stale"
     },
     "dollar": {
       "value": 268820.0,
@@ -22,18 +33,7 @@
       "sourceTimeLabel": "14 مهر",
       "pageTime": "2026-10-06 23:59:40",
       "fetchedAt": "2026-10-07T01:33:20.306178+00:00",
-      "status": "ok"
-    },
-    "ounce": {
-      "value": 4166.34,
-      "previous": 4163.14,
-      "unit": "USD/oz",
-      "source": "TGJU",
-      "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": "03:16:51",
-      "pageTime": "2026-10-06 23:46:32",
-      "fetchedAt": "2026-10-07T01:33:20.582184+00:00",
-      "status": "ok"
+      "status": "stale"
     }
   },
   "history": {
@@ -1234,5 +1234,21 @@
       }
     ]
   },
-  "errors": []
+  "errors": [
+    {
+      "asset": "ounce",
+      "kind": "quote",
+      "error": "HTTPError"
+    },
+    {
+      "asset": "gold",
+      "kind": "quote",
+      "error": "HTTPError"
+    },
+    {
+      "asset": "dollar",
+      "kind": "quote",
+      "error": "HTTPError"
+    }
+  ]
 }
