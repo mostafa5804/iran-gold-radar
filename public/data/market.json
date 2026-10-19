@@ -1,18 +1,7 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-18T23:13:58.345323+00:00",
+  "updatedAt": "2026-10-19T01:19:31.858507+00:00",
   "quotes": {
-    "dollar": {
-      "value": 262800.0,
-      "previous": 262800.0,
-      "unit": "IRT",
-      "source": "TGJU",
-      "url": "https://www.tgju.org/profile/price_dollar_rl",
-      "sourceTimeLabel": "26 مهر",
-      "pageTime": "2026-10-18 21:17:13",
-      "fetchedAt": "2026-10-18T23:13:58.453393+00:00",
-      "status": "ok"
-    },
     "gold": {
       "value": 25937200.0,
       "previous": 25937200.0,
@@ -20,19 +9,30 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/geram18",
       "sourceTimeLabel": "26 مهر",
-      "pageTime": "2026-10-18 21:17:13",
-      "fetchedAt": "2026-10-18T23:13:58.473562+00:00",
+      "pageTime": "2026-10-19 01:17:17",
+      "fetchedAt": "2026-10-19T01:19:32.137351+00:00",
+      "status": "ok"
+    },
+    "dollar": {
+      "value": 262800.0,
+      "previous": 262800.0,
+      "unit": "IRT",
+      "source": "TGJU",
+      "url": "https://www.tgju.org/profile/price_dollar_rl",
+      "sourceTimeLabel": "26 مهر",
+      "pageTime": "2026-10-19 01:17:17",
+      "fetchedAt": "2026-10-19T01:19:32.154073+00:00",
       "status": "ok"
     },
     "ounce": {
-      "value": 4166.39,
+      "value": 4171.98,
       "previous": 4166.39,
       "unit": "USD/oz",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": "25 مهر",
-      "pageTime": "2026-10-18 21:17:19",
-      "fetchedAt": "2026-10-18T23:13:58.531709+00:00",
+      "sourceTimeLabel": "04:47:42",
+      "pageTime": "2026-10-19 01:17:28",
+      "fetchedAt": "2026-10-19T01:19:32.206788+00:00",
       "status": "ok"
     }
   },
@@ -535,7 +535,8 @@
         "high": 26181900.0,
         "close": 25937200.0,
         "source": "TGJU",
-        "unit": "IRT"
+        "unit": "IRT",
+        "finalObservedAt": "2026-10-19T01:19:32.340158+00:00"
       }
     ],
     "dollar": [
@@ -1036,7 +1037,8 @@
         "high": 263800.0,
         "close": 262800.0,
         "source": "TGJU",
-        "unit": "IRT"
+        "unit": "IRT",
+        "finalObservedAt": "2026-10-19T01:19:32.327501+00:00"
       }
     ],
     "ounce": [
