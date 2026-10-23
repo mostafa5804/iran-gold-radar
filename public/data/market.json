@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-23T19:14:47.084160+00:00",
+  "updatedAt": "2026-10-23T22:16:14.909059+00:00",
   "quotes": {
     "dollar": {
       "value": 271905.0,
@@ -9,8 +9,8 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/price_dollar_rl",
       "sourceTimeLabel": "30 مهر",
-      "pageTime": "2026-10-23 18:21:40",
-      "fetchedAt": "2026-10-23T19:14:47.362606+00:00",
+      "pageTime": "2026-10-23 20:21:43",
+      "fetchedAt": "2026-10-23T22:16:15.246636+00:00",
       "status": "ok"
     },
     "gold": {
@@ -20,19 +20,19 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/geram18",
       "sourceTimeLabel": "30 مهر",
-      "pageTime": "2026-10-23 17:54:32",
-      "fetchedAt": "2026-10-23T19:14:47.373615+00:00",
+      "pageTime": "2026-10-23 21:54:38",
+      "fetchedAt": "2026-10-23T22:16:15.253047+00:00",
       "status": "ok"
     },
     "ounce": {
-      "value": 3996.82,
-      "previous": 4022.02,
+      "value": 3993.96,
+      "previous": 3995.81,
       "unit": "USD/oz",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": "21:24:38",
-      "pageTime": "2026-10-23 17:55:06",
-      "fetchedAt": "2026-10-23T19:14:47.501442+00:00",
+      "sourceTimeLabel": "00:51:03",
+      "pageTime": "2026-10-23 21:55:13",
+      "fetchedAt": "2026-10-23T22:16:15.496785+00:00",
       "status": "ok"
     }
   },
@@ -1651,6 +1651,15 @@
         "source": "TGJU",
         "unit": "USD/oz",
         "finalObservedAt": "2026-10-23T04:51:37.232465+00:00"
+      },
+      {
+        "date": "2026-10-23",
+        "open": 4022.42,
+        "low": 3982.98,
+        "high": 4032.28,
+        "close": 3997.0,
+        "source": "TGJU",
+        "unit": "USD/oz"
       }
     ]
   },
