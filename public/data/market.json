@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-24T14:34:12.042309+00:00",
+  "updatedAt": "2026-10-24T18:10:19.526583+00:00",
   "quotes": {
     "dollar": {
-      "value": 268070.0,
+      "value": 267995.0,
       "previous": 271905.0,
       "unit": "IRT",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/price_dollar_rl",
-      "sourceTimeLabel": "17:52:31",
-      "pageTime": "2026-10-24 14:22:03",
-      "fetchedAt": "2026-10-24T14:34:12.198353+00:00",
+      "sourceTimeLabel": "19:52:33",
+      "pageTime": "2026-10-24 16:22:05",
+      "fetchedAt": "2026-10-24T18:10:19.696767+00:00",
       "status": "ok"
     },
     "gold": {
@@ -22,7 +22,7 @@
       "sourceTimeLabel": "17:25:20",
       "pageTime": "2026-10-24 13:54:57",
       "fetchedAt": "2026-10-24T14:34:12.215433+00:00",
-      "status": "ok"
+      "status": "stale"
     },
     "ounce": {
       "value": 3993.96,
@@ -33,7 +33,7 @@
       "sourceTimeLabel": "00:51:03",
       "pageTime": "2026-10-24 13:56:02",
       "fetchedAt": "2026-10-24T14:34:12.307621+00:00",
-      "status": "ok"
+      "status": "stale"
     }
   },
   "history": {
@@ -1664,5 +1664,16 @@
       }
     ]
   },
-  "errors": []
+  "errors": [
+    {
+      "asset": "gold",
+      "kind": "quote",
+      "error": "HTTPError"
+    },
+    {
+      "asset": "ounce",
+      "kind": "quote",
+      "error": "HTTPError"
+    }
+  ]
 }
