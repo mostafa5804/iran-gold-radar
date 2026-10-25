@@ -1,18 +1,7 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-24T23:16:27.398585+00:00",
+  "updatedAt": "2026-10-25T01:16:55.623434+00:00",
   "quotes": {
-    "dollar": {
-      "value": 268500.0,
-      "previous": 268500.0,
-      "unit": "IRT",
-      "source": "TGJU",
-      "url": "https://www.tgju.org/profile/price_dollar_rl",
-      "sourceTimeLabel": "2 آبان",
-      "pageTime": "2026-10-24 22:02:41",
-      "fetchedAt": "2026-10-24T23:16:27.738442+00:00",
-      "status": "ok"
-    },
     "gold": {
       "value": 26063300.0,
       "previous": 26063300.0,
@@ -20,8 +9,19 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/geram18",
       "sourceTimeLabel": "2 آبان",
-      "pageTime": "2026-10-24 21:25:57",
-      "fetchedAt": "2026-10-24T23:16:27.755177+00:00",
+      "pageTime": "2026-10-24 23:53:38",
+      "fetchedAt": "2026-10-25T01:16:56.132944+00:00",
+      "status": "ok"
+    },
+    "dollar": {
+      "value": 268500.0,
+      "previous": 268500.0,
+      "unit": "IRT",
+      "source": "TGJU",
+      "url": "https://www.tgju.org/profile/price_dollar_rl",
+      "sourceTimeLabel": "2 آبان",
+      "pageTime": "2026-10-25 00:02:45",
+      "fetchedAt": "2026-10-25T01:16:56.136191+00:00",
       "status": "ok"
     },
     "ounce": {
@@ -31,8 +31,8 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
       "sourceTimeLabel": "2 آبان",
-      "pageTime": "2026-10-24 22:12:08",
-      "fetchedAt": "2026-10-24T23:16:28.001233+00:00",
+      "pageTime": "2026-10-25 00:12:12",
+      "fetchedAt": "2026-10-25T01:16:56.476412+00:00",
       "status": "ok"
     }
   },
@@ -585,7 +585,8 @@
         "high": 27223500.0,
         "close": 26063300.0,
         "source": "TGJU",
-        "unit": "IRT"
+        "unit": "IRT",
+        "finalObservedAt": "2026-10-25T01:16:56.116982+00:00"
       }
     ],
     "dollar": [
@@ -1687,9 +1688,16 @@
         "high": 3997.43,
         "close": 3993.96,
         "source": "TGJU",
-        "unit": "USD/oz"
+        "unit": "USD/oz",
+        "finalObservedAt": "2026-10-25T01:16:56.596472+00:00"
       }
     ]
   },
-  "errors": []
+  "errors": [
+    {
+      "asset": "dollar",
+      "kind": "history",
+      "error": "ValueError"
+    }
+  ]
 }
