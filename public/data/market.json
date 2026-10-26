@@ -1,38 +1,38 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-26T06:15:56.783553+00:00",
+  "updatedAt": "2026-10-26T13:16:11.122904+00:00",
   "quotes": {
     "gold": {
-      "value": 25993300.0,
+      "value": 26225800.0,
       "previous": 25993300.0,
       "unit": "IRT",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/geram18",
-      "sourceTimeLabel": "3 آبان",
-      "pageTime": "2026-10-26 02:46:42",
-      "fetchedAt": "2026-10-26T06:15:59.327065+00:00",
+      "sourceTimeLabel": "15:52:18",
+      "pageTime": "2026-10-26 12:21:59",
+      "fetchedAt": "2026-10-26T13:16:13.629607+00:00",
       "status": "ok"
     },
     "dollar": {
-      "value": 269500.0,
+      "value": 272205.0,
       "previous": 269500.0,
       "unit": "IRT",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/price_dollar_rl",
-      "sourceTimeLabel": "3 آبان",
-      "pageTime": "2026-10-26 02:35:43",
-      "fetchedAt": "2026-10-26T06:15:59.337170+00:00",
+      "sourceTimeLabel": "15:50:06",
+      "pageTime": "2026-10-26 12:19:40",
+      "fetchedAt": "2026-10-26T13:16:13.749511+00:00",
       "status": "ok"
     },
     "ounce": {
-      "value": 4008.99,
+      "value": 4023.53,
       "previous": 3993.96,
       "unit": "USD/oz",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": "06:39:21",
-      "pageTime": "2026-10-26 03:09:44",
-      "fetchedAt": "2026-10-26T06:16:01.717273+00:00",
+      "sourceTimeLabel": "16:07:46",
+      "pageTime": "2026-10-26 12:39:03",
+      "fetchedAt": "2026-10-26T13:16:16.670012+00:00",
       "status": "ok"
     }
   },
@@ -595,7 +595,8 @@
         "high": 26341200.0,
         "close": 25993300.0,
         "source": "TGJU",
-        "unit": "IRT"
+        "unit": "IRT",
+        "finalObservedAt": "2026-10-26T13:16:13.402082+00:00"
       }
     ],
     "dollar": [
@@ -1713,16 +1714,5 @@
       }
     ]
   },
-  "errors": [
-    {
-      "asset": "ounce",
-      "kind": "history",
-      "error": "HTTPError"
-    },
-    {
-      "asset": "gold",
-      "kind": "history",
-      "error": "TimeoutError"
-    }
-  ]
+  "errors": []
 }
