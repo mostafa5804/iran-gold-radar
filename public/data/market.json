@@ -1,38 +1,38 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-27T16:40:31.789054+00:00",
+  "updatedAt": "2026-10-27T21:20:30.591717+00:00",
   "quotes": {
     "gold": {
-      "value": 26254400.0,
-      "previous": 26363600.0,
+      "value": 26207300.0,
+      "previous": 26207300.0,
       "unit": "IRT",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/geram18",
-      "sourceTimeLabel": "19:31:51",
-      "pageTime": "2026-10-27 16:01:26",
-      "fetchedAt": "2026-10-27T16:40:33.919718+00:00",
+      "sourceTimeLabel": "5 آبان",
+      "pageTime": "2026-10-27 20:57:01",
+      "fetchedAt": "2026-10-27T21:20:32.573494+00:00",
       "status": "ok"
     },
     "dollar": {
       "value": 269500.0,
-      "previous": 271500.0,
+      "previous": 269500.0,
       "unit": "IRT",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/price_dollar_rl",
-      "sourceTimeLabel": "19:19:34",
-      "pageTime": "2026-10-27 15:50:05",
-      "fetchedAt": "2026-10-27T16:40:34.042022+00:00",
+      "sourceTimeLabel": "5 آبان",
+      "pageTime": "2026-10-27 20:49:35",
+      "fetchedAt": "2026-10-27T21:20:32.781570+00:00",
       "status": "ok"
     },
     "ounce": {
-      "value": 4061.84,
-      "previous": 4012.95,
+      "value": 4060.08,
+      "previous": 4058.91,
       "unit": "USD/oz",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": "19:27:36",
-      "pageTime": "2026-10-27 15:57:22",
-      "fetchedAt": "2026-10-27T16:40:36.041738+00:00",
+      "sourceTimeLabel": "00:31:24",
+      "pageTime": "2026-10-27 21:05:07",
+      "fetchedAt": "2026-10-27T21:20:35.061460+00:00",
       "status": "ok"
     }
   },
@@ -1179,6 +1179,15 @@
         "source": "TGJU",
         "unit": "IRT",
         "finalObservedAt": "2026-10-27T05:07:26.846145+00:00"
+      },
+      {
+        "date": "2026-10-27",
+        "open": 271185.0,
+        "low": 269460.0,
+        "high": 273500.0,
+        "close": 269500.0,
+        "source": "TGJU",
+        "unit": "IRT"
       }
     ],
     "ounce": [
