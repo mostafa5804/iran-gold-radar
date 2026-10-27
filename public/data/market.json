@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-26T23:54:24.961334+00:00",
+  "updatedAt": "2026-10-27T05:07:22.973385+00:00",
   "quotes": {
     "gold": {
       "value": 26363600.0,
@@ -9,8 +9,8 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/geram18",
       "sourceTimeLabel": "4 آبان",
-      "pageTime": "2026-10-26 23:26:24",
-      "fetchedAt": "2026-10-26T23:54:27.076670+00:00",
+      "pageTime": "2026-10-27 04:29:30",
+      "fetchedAt": "2026-10-27T05:07:25.186717+00:00",
       "status": "ok"
     },
     "dollar": {
@@ -20,19 +20,19 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/price_dollar_rl",
       "sourceTimeLabel": "4 آبان",
-      "pageTime": "2026-10-26 23:45:18",
-      "fetchedAt": "2026-10-26T23:54:27.145944+00:00",
+      "pageTime": "2026-10-27 04:22:39",
+      "fetchedAt": "2026-10-27T05:07:25.293022+00:00",
       "status": "ok"
     },
     "ounce": {
-      "value": 4011.96,
+      "value": 4021.28,
       "previous": 4012.95,
       "unit": "USD/oz",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": "02:32:52",
-      "pageTime": "2026-10-26 23:03:47",
-      "fetchedAt": "2026-10-26T23:54:29.311685+00:00",
+      "sourceTimeLabel": "07:41:13",
+      "pageTime": "2026-10-27 04:11:10",
+      "fetchedAt": "2026-10-27T05:07:27.112528+00:00",
       "status": "ok"
     }
   },
@@ -1176,7 +1176,8 @@
         "high": 272710.0,
         "close": 271500.0,
         "source": "TGJU",
-        "unit": "IRT"
+        "unit": "IRT",
+        "finalObservedAt": "2026-10-27T05:07:26.846145+00:00"
       }
     ],
     "ounce": [
@@ -1729,6 +1730,16 @@
         "source": "TGJU",
         "unit": "USD/oz",
         "finalObservedAt": "2026-10-25T01:16:56.596472+00:00"
+      },
+      {
+        "date": "2026-10-26",
+        "open": 3995.92,
+        "low": 3979.64,
+        "high": 4028.77,
+        "close": 4013.28,
+        "source": "TGJU",
+        "unit": "USD/oz",
+        "finalObservedAt": "2026-10-27T05:07:27.135417+00:00"
       }
     ]
   },
