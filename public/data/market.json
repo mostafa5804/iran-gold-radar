@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-30T14:10:35.820248+00:00",
+  "updatedAt": "2026-10-30T19:24:08.235571+00:00",
   "quotes": {
     "dollar": {
       "value": 271060.0,
@@ -9,8 +9,8 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/price_dollar_rl",
       "sourceTimeLabel": "7 آبان",
-      "pageTime": "2026-10-30 13:47:12",
-      "fetchedAt": "2026-10-30T14:10:37.800831+00:00",
+      "pageTime": "2026-10-30 18:47:21",
+      "fetchedAt": "2026-10-30T19:24:10.096181+00:00",
       "status": "ok"
     },
     "gold": {
@@ -20,19 +20,19 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/geram18",
       "sourceTimeLabel": "7 آبان",
-      "pageTime": "2026-10-30 13:52:45",
-      "fetchedAt": "2026-10-30T14:10:37.895755+00:00",
+      "pageTime": "2026-10-30 18:57:00",
+      "fetchedAt": "2026-10-30T19:24:10.158274+00:00",
       "status": "ok"
     },
     "ounce": {
-      "value": 3944.1,
-      "previous": null,
+      "value": 3881.72,
+      "previous": 4027.16,
       "unit": "USD/oz",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": null,
-      "pageTime": "2026-10-30 13:20:49",
-      "fetchedAt": "2026-10-30T14:10:39.904334+00:00",
+      "sourceTimeLabel": "22:08:27",
+      "pageTime": "2026-10-30 18:40:02",
+      "fetchedAt": "2026-10-30T19:24:12.180730+00:00",
       "status": "ok"
     }
   },
