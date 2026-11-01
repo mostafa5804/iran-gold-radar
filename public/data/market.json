@@ -1,27 +1,27 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-01T01:11:50.010405+00:00",
+  "updatedAt": "2026-11-01T07:33:44.262400+00:00",
   "quotes": {
-    "gold": {
-      "value": 25233100.0,
-      "previous": 26223500.0,
-      "unit": "IRT",
-      "source": "TGJU",
-      "url": "https://www.tgju.org/profile/geram18",
-      "sourceTimeLabel": "19:59:54",
-      "pageTime": "2026-10-31 18:58:53",
-      "fetchedAt": "2026-11-01T01:11:52.629202+00:00",
-      "status": "ok"
-    },
     "dollar": {
-      "value": 270500.0,
-      "previous": 271060.0,
+      "value": 270510.0,
+      "previous": 270510.0,
       "unit": "IRT",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/price_dollar_rl",
-      "sourceTimeLabel": "19:59:55",
-      "pageTime": "2026-10-31 19:01:40",
-      "fetchedAt": "2026-11-01T01:11:52.632972+00:00",
+      "sourceTimeLabel": "9 آبان",
+      "pageTime": "2026-11-01 07:15:43",
+      "fetchedAt": "2026-11-01T07:33:46.122093+00:00",
+      "status": "ok"
+    },
+    "gold": {
+      "value": 25233100.0,
+      "previous": 25233100.0,
+      "unit": "IRT",
+      "source": "TGJU",
+      "url": "https://www.tgju.org/profile/geram18",
+      "sourceTimeLabel": "9 آبان",
+      "pageTime": "2026-11-01 07:16:15",
+      "fetchedAt": "2026-11-01T07:33:46.130959+00:00",
       "status": "ok"
     },
     "ounce": {
@@ -31,8 +31,8 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
       "sourceTimeLabel": "01:50:16",
-      "pageTime": "2026-10-31 09:49:55",
-      "fetchedAt": "2026-11-01T01:11:55.208735+00:00",
+      "pageTime": "2026-10-31 06:53:19",
+      "fetchedAt": "2026-11-01T07:33:47.931588+00:00",
       "status": "ok"
     }
   },
@@ -645,7 +645,8 @@
         "high": 26225600.0,
         "close": 25233100.0,
         "source": "TGJU",
-        "unit": "IRT"
+        "unit": "IRT",
+        "finalObservedAt": "2026-11-01T07:33:45.999083+00:00"
       }
     ],
     "dollar": [
