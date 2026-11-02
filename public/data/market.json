@@ -1,38 +1,38 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-02T06:06:38.844721+00:00",
+  "updatedAt": "2026-11-02T15:56:02.232562+00:00",
   "quotes": {
+    "gold": {
+      "value": 25804300.0,
+      "previous": 25579200.0,
+      "unit": "IRT",
+      "source": "TGJU",
+      "url": "https://www.tgju.org/profile/geram18",
+      "sourceTimeLabel": "18:02:35",
+      "pageTime": "2026-11-02 14:32:34",
+      "fetchedAt": "2026-11-02T15:56:04.734464+00:00",
+      "status": "ok"
+    },
     "dollar": {
-      "value": 271500.0,
+      "value": 271910.0,
       "previous": 271500.0,
       "unit": "IRT",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/price_dollar_rl",
-      "sourceTimeLabel": "10 آبان",
-      "pageTime": "2026-11-02 05:26:27",
-      "fetchedAt": "2026-11-02T06:06:40.716855+00:00",
-      "status": "ok"
-    },
-    "gold": {
-      "value": 26223500.0,
-      "previous": 26223500.0,
-      "unit": "IRT",
-      "source": "TGJU",
-      "url": "https://www.tgju.org/profile/geram18",
-      "sourceTimeLabel": "7 آبان",
-      "pageTime": "2026-10-31 06:53:23",
-      "fetchedAt": "2026-11-02T06:06:40.784225+00:00",
+      "sourceTimeLabel": "17:57:40",
+      "pageTime": "2026-11-02 14:28:05",
+      "fetchedAt": "2026-11-02T15:56:04.849784+00:00",
       "status": "ok"
     },
     "ounce": {
-      "value": 3906.83,
+      "value": 3948.39,
       "previous": 3875.84,
       "unit": "USD/oz",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": "09:01:03",
-      "pageTime": "2026-11-02 05:32:24",
-      "fetchedAt": "2026-11-02T06:06:42.501426+00:00",
+      "sourceTimeLabel": "18:04:23",
+      "pageTime": "2026-11-02 14:36:30",
+      "fetchedAt": "2026-11-02T15:56:07.387253+00:00",
       "status": "ok"
     }
   },
@@ -655,7 +655,8 @@
         "high": 25701500.0,
         "close": 25579200.0,
         "source": "TGJU",
-        "unit": "IRT"
+        "unit": "IRT",
+        "finalObservedAt": "2026-11-02T15:56:04.745821+00:00"
       }
     ],
     "dollar": [
