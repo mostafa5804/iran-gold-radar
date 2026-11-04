@@ -1,38 +1,38 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-04T17:19:05.578654+00:00",
+  "updatedAt": "2026-11-04T23:40:30.927592+00:00",
   "quotes": {
-    "dollar": {
-      "value": 272500.0,
-      "previous": 272500.0,
-      "unit": "IRT",
-      "source": "TGJU",
-      "url": "https://www.tgju.org/profile/price_dollar_rl",
-      "sourceTimeLabel": "12 آبان",
-      "pageTime": "2026-11-04 00:23:00",
-      "fetchedAt": "2026-11-04T17:19:07.653333+00:00",
-      "status": "ok"
-    },
     "gold": {
-      "value": 25509500.0,
-      "previous": 25509500.0,
+      "value": 26062100.0,
+      "previous": 26062100.0,
       "unit": "IRT",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/geram18",
-      "sourceTimeLabel": "12 آبان",
-      "pageTime": "2026-11-04 02:23:20",
-      "fetchedAt": "2026-11-04T17:19:07.726246+00:00",
+      "sourceTimeLabel": "13 آبان",
+      "pageTime": "2026-11-04 22:43:47",
+      "fetchedAt": "2026-11-04T23:40:33.576477+00:00",
+      "status": "ok"
+    },
+    "dollar": {
+      "value": 268900.0,
+      "previous": 268900.0,
+      "unit": "IRT",
+      "source": "TGJU",
+      "url": "https://www.tgju.org/profile/price_dollar_rl",
+      "sourceTimeLabel": "13 آبان",
+      "pageTime": "2026-11-04 23:20:38",
+      "fetchedAt": "2026-11-04T23:40:33.589789+00:00",
       "status": "ok"
     },
     "ounce": {
-      "value": 4037.01,
-      "previous": null,
+      "value": 4060.22,
+      "previous": 4063.32,
       "unit": "USD/oz",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": null,
-      "pageTime": "2026-11-04 15:40:43",
-      "fetchedAt": "2026-11-04T17:19:09.905773+00:00",
+      "sourceTimeLabel": "02:46:36",
+      "pageTime": "2026-11-04 23:17:47",
+      "fetchedAt": "2026-11-04T23:40:36.226141+00:00",
       "status": "ok"
     }
   },
@@ -677,6 +677,15 @@
         "source": "TGJU",
         "unit": "IRT",
         "finalObservedAt": "2026-11-04T09:14:42.004801+00:00"
+      },
+      {
+        "date": "2026-11-04",
+        "open": 25510200.0,
+        "low": 25510200.0,
+        "high": 26110400.0,
+        "close": 26062100.0,
+        "source": "TGJU",
+        "unit": "IRT"
       }
     ],
     "dollar": [
