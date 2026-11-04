@@ -1,38 +1,38 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-03T20:59:52.674729+00:00",
+  "updatedAt": "2026-11-04T01:23:04.254097+00:00",
   "quotes": {
     "gold": {
       "value": 25509500.0,
-      "previous": 25813300.0,
+      "previous": 25509500.0,
       "unit": "IRT",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/geram18",
-      "sourceTimeLabel": "19:59:50",
-      "pageTime": "2026-11-03 20:25:33",
-      "fetchedAt": "2026-11-03T20:59:54.510936+00:00",
+      "sourceTimeLabel": "12 آبان",
+      "pageTime": "2026-11-04 00:25:08",
+      "fetchedAt": "2026-11-04T01:23:06.290482+00:00",
       "status": "ok"
     },
     "dollar": {
       "value": 272500.0,
-      "previous": 271500.0,
+      "previous": 272500.0,
       "unit": "IRT",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/price_dollar_rl",
-      "sourceTimeLabel": "19:59:58",
-      "pageTime": "2026-11-03 20:15:29",
-      "fetchedAt": "2026-11-03T20:59:54.736074+00:00",
+      "sourceTimeLabel": "12 آبان",
+      "pageTime": "2026-11-04 01:15:37",
+      "fetchedAt": "2026-11-04T01:23:06.846172+00:00",
       "status": "ok"
     },
     "ounce": {
-      "value": 3922.21,
-      "previous": 3941.3,
+      "value": 3934.5,
+      "previous": 3922.31,
       "unit": "USD/oz",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": "23:58:51",
-      "pageTime": "2026-11-03 20:32:06",
-      "fetchedAt": "2026-11-03T20:59:56.709134+00:00",
+      "sourceTimeLabel": "04:02:50",
+      "pageTime": "2026-11-04 00:33:11",
+      "fetchedAt": "2026-11-04T01:23:08.150952+00:00",
       "status": "ok"
     }
   },
@@ -1299,6 +1299,16 @@
         "source": "TGJU",
         "unit": "IRT",
         "finalObservedAt": "2026-11-03T06:50:04.549102+00:00"
+      },
+      {
+        "date": "2026-11-03",
+        "open": 271510.0,
+        "low": 270500.0,
+        "high": 274500.0,
+        "close": 272500.0,
+        "source": "TGJU",
+        "unit": "IRT",
+        "finalObservedAt": "2026-11-04T01:23:07.959684+00:00"
       }
     ],
     "ounce": [
