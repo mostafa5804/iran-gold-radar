@@ -1,38 +1,38 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-09T06:33:11.622482+00:00",
+  "updatedAt": "2026-11-09T17:30:24.332134+00:00",
   "quotes": {
-    "gold": {
-      "value": 25417100.0,
-      "previous": 25594000.0,
-      "unit": "IRT",
-      "source": "TGJU",
-      "url": "https://www.tgju.org/profile/geram18",
-      "sourceTimeLabel": "18:27:55",
-      "pageTime": "2026-11-08 18:41:06",
-      "fetchedAt": "2026-11-09T06:33:14.155533+00:00",
-      "status": "ok"
-    },
     "dollar": {
-      "value": 264900.0,
+      "value": 263900.0,
       "previous": 264900.0,
       "unit": "IRT",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/price_dollar_rl",
-      "sourceTimeLabel": "17 آبان",
-      "pageTime": "2026-11-09 05:53:00",
-      "fetchedAt": "2026-11-09T06:33:14.651736+00:00",
+      "sourceTimeLabel": "19:59:15",
+      "pageTime": "2026-11-09 16:58:08",
+      "fetchedAt": "2026-11-09T17:30:26.858027+00:00",
+      "status": "ok"
+    },
+    "gold": {
+      "value": 25544600.0,
+      "previous": 25417100.0,
+      "unit": "IRT",
+      "source": "TGJU",
+      "url": "https://www.tgju.org/profile/geram18",
+      "sourceTimeLabel": "19:59:54",
+      "pageTime": "2026-11-09 17:01:33",
+      "fetchedAt": "2026-11-09T17:30:26.890593+00:00",
       "status": "ok"
     },
     "ounce": {
-      "value": 4070.41,
-      "previous": null,
+      "value": 4106.63,
+      "previous": 4070.41,
       "unit": "USD/oz",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": null,
-      "pageTime": "2026-11-09 05:03:03",
-      "fetchedAt": "2026-11-09T06:33:16.074402+00:00",
+      "sourceTimeLabel": "20:25:41",
+      "pageTime": "2026-11-09 16:55:47",
+      "fetchedAt": "2026-11-09T17:30:31.431104+00:00",
       "status": "ok"
     }
   },
@@ -1397,7 +1397,8 @@
         "high": 266110.0,
         "close": 264900.0,
         "source": "TGJU",
-        "unit": "IRT"
+        "unit": "IRT",
+        "finalObservedAt": "2026-11-09T17:30:28.648583+00:00"
       }
     ],
     "ounce": [
