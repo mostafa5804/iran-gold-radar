@@ -1,38 +1,38 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-08T23:43:59.266843+00:00",
+  "updatedAt": "2026-11-09T06:33:11.622482+00:00",
   "quotes": {
     "gold": {
-      "value": 25474600.0,
+      "value": 25417100.0,
       "previous": 25594000.0,
       "unit": "IRT",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/geram18",
-      "sourceTimeLabel": "15:29:49",
-      "pageTime": "2026-11-08 12:03:07",
-      "fetchedAt": "2026-11-08T23:44:01.206158+00:00",
+      "sourceTimeLabel": "18:27:55",
+      "pageTime": "2026-11-08 18:41:06",
+      "fetchedAt": "2026-11-09T06:33:14.155533+00:00",
       "status": "ok"
     },
     "dollar": {
       "value": 264900.0,
-      "previous": 266110.0,
+      "previous": 264900.0,
       "unit": "IRT",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/price_dollar_rl",
-      "sourceTimeLabel": "18:27:57",
-      "pageTime": "2026-11-08 15:16:22",
-      "fetchedAt": "2026-11-08T23:44:01.262329+00:00",
+      "sourceTimeLabel": "17 آبان",
+      "pageTime": "2026-11-09 05:53:00",
+      "fetchedAt": "2026-11-09T06:33:14.651736+00:00",
       "status": "ok"
     },
     "ounce": {
       "value": 4070.41,
-      "previous": 4070.41,
+      "previous": null,
       "unit": "USD/oz",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": "16 آبان",
-      "pageTime": "2026-11-08 12:46:08",
-      "fetchedAt": "2026-11-08T23:44:03.215289+00:00",
+      "sourceTimeLabel": null,
+      "pageTime": "2026-11-09 05:03:03",
+      "fetchedAt": "2026-11-09T06:33:16.074402+00:00",
       "status": "ok"
     }
   },
@@ -705,7 +705,18 @@
         "high": 26165800.0,
         "close": 25594000.0,
         "source": "TGJU",
-        "unit": "IRT"
+        "unit": "IRT",
+        "finalObservedAt": "2026-11-09T06:33:13.339017+00:00"
+      },
+      {
+        "date": "2026-11-08",
+        "open": 25381800.0,
+        "low": 25253900.0,
+        "high": 25556300.0,
+        "close": 25417100.0,
+        "source": "TGJU",
+        "unit": "IRT",
+        "finalObservedAt": "2026-11-09T06:33:13.339017+00:00"
       }
     ],
     "dollar": [
