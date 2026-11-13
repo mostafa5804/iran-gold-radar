@@ -1,18 +1,7 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-13T16:26:06.237593+00:00",
+  "updatedAt": "2026-11-13T22:38:39.303028+00:00",
   "quotes": {
-    "gold": {
-      "value": 25038800.0,
-      "previous": 25038800.0,
-      "unit": "IRT",
-      "source": "TGJU",
-      "url": "https://www.tgju.org/profile/geram18",
-      "sourceTimeLabel": "21 آبان",
-      "pageTime": "2026-11-13 16:21:38",
-      "fetchedAt": "2026-11-13T16:26:08.209636+00:00",
-      "status": "ok"
-    },
     "dollar": {
       "value": 266900.0,
       "previous": 266900.0,
@@ -20,19 +9,30 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/price_dollar_rl",
       "sourceTimeLabel": "21 آبان",
-      "pageTime": "2026-11-13 16:22:46",
-      "fetchedAt": "2026-11-13T16:26:08.211631+00:00",
+      "pageTime": "2026-11-13 22:36:25",
+      "fetchedAt": "2026-11-13T22:38:41.164012+00:00",
+      "status": "ok"
+    },
+    "gold": {
+      "value": 25038800.0,
+      "previous": 25038800.0,
+      "unit": "IRT",
+      "source": "TGJU",
+      "url": "https://www.tgju.org/profile/geram18",
+      "sourceTimeLabel": "21 آبان",
+      "pageTime": "2026-11-13 22:33:34",
+      "fetchedAt": "2026-11-13T22:38:41.355399+00:00",
       "status": "ok"
     },
     "ounce": {
       "value": 3883.92,
-      "previous": 3881.38,
+      "previous": 3883.92,
       "unit": "USD/oz",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": "19:34:58",
-      "pageTime": "2026-11-13 16:21:18",
-      "fetchedAt": "2026-11-13T16:26:09.995708+00:00",
+      "sourceTimeLabel": "22 آبان",
+      "pageTime": "2026-11-13 22:33:36",
+      "fetchedAt": "2026-11-13T22:38:42.931367+00:00",
       "status": "ok"
     }
   },
@@ -2191,8 +2191,23 @@
         "source": "TGJU",
         "unit": "USD/oz",
         "finalObservedAt": "2026-11-13T00:26:19.267681+00:00"
+      },
+      {
+        "date": "2026-11-13",
+        "open": 3881.31,
+        "low": 3855.58,
+        "high": 3922.5,
+        "close": 3883.92,
+        "source": "TGJU",
+        "unit": "USD/oz"
       }
     ]
   },
-  "errors": []
+  "errors": [
+    {
+      "asset": "dollar",
+      "kind": "history",
+      "error": "ValueError"
+    }
+  ]
 }
