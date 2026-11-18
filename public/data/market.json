@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-17T22:52:40.091371+00:00",
+  "updatedAt": "2026-11-18T04:23:04.586824+00:00",
   "quotes": {
     "gold": {
       "value": 24650000.0,
@@ -9,8 +9,8 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/geram18",
       "sourceTimeLabel": "26 آبان",
-      "pageTime": "2026-11-17 22:48:33",
-      "fetchedAt": "2026-11-17T22:52:41.436327+00:00",
+      "pageTime": "2026-11-18 04:18:46",
+      "fetchedAt": "2026-11-18T04:23:05.959382+00:00",
       "status": "ok"
     },
     "dollar": {
@@ -20,19 +20,19 @@
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/price_dollar_rl",
       "sourceTimeLabel": "26 آبان",
-      "pageTime": "2026-11-17 22:47:33",
-      "fetchedAt": "2026-11-17T22:52:41.516296+00:00",
+      "pageTime": "2026-11-18 04:20:17",
+      "fetchedAt": "2026-11-18T04:23:06.025623+00:00",
       "status": "ok"
     },
     "ounce": {
-      "value": 3849.49,
+      "value": 3782.7,
       "previous": 3848.76,
       "unit": "USD/oz",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": "01:54:50",
-      "pageTime": "2026-11-17 22:48:08",
-      "fetchedAt": "2026-11-17T22:52:42.719236+00:00",
+      "sourceTimeLabel": "07:46:08",
+      "pageTime": "2026-11-18 04:17:46",
+      "fetchedAt": "2026-11-18T04:23:07.440354+00:00",
       "status": "ok"
     }
   },
@@ -795,7 +795,8 @@
         "high": 24736800.0,
         "close": 24650000.0,
         "source": "TGJU",
-        "unit": "IRT"
+        "unit": "IRT",
+        "finalObservedAt": "2026-11-18T04:23:06.077999+00:00"
       }
     ],
     "dollar": [
@@ -1556,7 +1557,8 @@
         "high": 269900.0,
         "close": 266710.0,
         "source": "TGJU",
-        "unit": "IRT"
+        "unit": "IRT",
+        "finalObservedAt": "2026-11-18T04:23:07.296767+00:00"
       }
     ],
     "ounce": [
@@ -2297,7 +2299,8 @@
         "high": 3887.37,
         "close": 3846.32,
         "source": "TGJU",
-        "unit": "USD/oz"
+        "unit": "USD/oz",
+        "finalObservedAt": "2026-11-18T04:23:07.370517+00:00"
       }
     ]
   },
