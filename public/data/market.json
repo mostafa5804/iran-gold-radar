@@ -1,38 +1,38 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-25T14:25:55.761975+00:00",
+  "updatedAt": "2026-11-25T23:37:58.802250+00:00",
   "quotes": {
-    "dollar": {
-      "value": 290355.0,
-      "previous": 283890.0,
-      "unit": "IRT",
-      "source": "TGJU",
-      "url": "https://www.tgju.org/profile/price_dollar_rl",
-      "sourceTimeLabel": "17:48:26",
-      "pageTime": "2026-11-25 14:23:08",
-      "fetchedAt": "2026-11-25T14:25:57.653977+00:00",
-      "status": "ok"
-    },
     "gold": {
-      "value": 25221600.0,
-      "previous": 25394700.0,
+      "value": 25475500.0,
+      "previous": 25475500.0,
       "unit": "IRT",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/geram18",
-      "sourceTimeLabel": "17:48:00",
-      "pageTime": "2026-11-25 14:22:35",
-      "fetchedAt": "2026-11-25T14:25:57.656390+00:00",
+      "sourceTimeLabel": "4 آذر",
+      "pageTime": "2026-11-25 23:32:35",
+      "fetchedAt": "2026-11-25T23:38:00.033220+00:00",
+      "status": "ok"
+    },
+    "dollar": {
+      "value": 292890.0,
+      "previous": 292890.0,
+      "unit": "IRT",
+      "source": "TGJU",
+      "url": "https://www.tgju.org/profile/price_dollar_rl",
+      "sourceTimeLabel": "4 آذر",
+      "pageTime": "2026-11-25 23:32:48",
+      "fetchedAt": "2026-11-25T23:38:00.049560+00:00",
       "status": "ok"
     },
     "ounce": {
-      "value": 3477.52,
-      "previous": 3554.01,
+      "value": 3573.96,
+      "previous": 3571.02,
       "unit": "USD/oz",
       "source": "TGJU",
       "url": "https://www.tgju.org/profile/ons",
-      "sourceTimeLabel": "17:49:00",
-      "pageTime": "2026-11-25 14:20:34",
-      "fetchedAt": "2026-11-25T14:25:59.218404+00:00",
+      "sourceTimeLabel": "03:03:36",
+      "pageTime": "2026-11-25 23:36:43",
+      "fetchedAt": "2026-11-25T23:38:01.280939+00:00",
       "status": "ok"
     }
   },
@@ -857,6 +857,15 @@
         "source": "TGJU",
         "unit": "IRT",
         "finalObservedAt": "2026-11-25T04:12:42.027819+00:00"
+      },
+      {
+        "date": "2026-11-25",
+        "open": 25392900.0,
+        "low": 25103900.0,
+        "high": 25570200.0,
+        "close": 25475500.0,
+        "source": "TGJU",
+        "unit": "IRT"
       }
     ],
     "dollar": [
@@ -1679,6 +1688,15 @@
         "source": "TGJU",
         "unit": "IRT",
         "finalObservedAt": "2026-11-25T04:12:43.206952+00:00"
+      },
+      {
+        "date": "2026-11-25",
+        "open": 284080.0,
+        "low": 283890.0,
+        "high": 293890.0,
+        "close": 292890.0,
+        "source": "TGJU",
+        "unit": "IRT"
       }
     ],
     "ounce": [
@@ -2481,6 +2499,15 @@
         "source": "TGJU",
         "unit": "USD/oz",
         "finalObservedAt": "2026-11-25T04:12:43.162349+00:00"
+      },
+      {
+        "date": "2026-11-25",
+        "open": 3551.17,
+        "low": 3430.02,
+        "high": 3573.95,
+        "close": 3573.84,
+        "source": "TGJU",
+        "unit": "USD/oz"
       }
     ]
   },
